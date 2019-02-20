@@ -92,6 +92,13 @@ namespace UIEngine.Memory
         }
 
         /// <summary>
+        /// Читает из процесса текст по определенному адресу
+        /// </summary>
+        /// <param name="Address">Адрес для чтения</param>
+        /// <returns></returns>
+        public string ReadString(int Address,uint Size) => Encoding.UTF8.GetString(ReadBytes((IntPtr)Address,Size));
+
+        /// <summary>
         /// Записывает в память значение по определенному адресу
         /// </summary>
         /// <typeparam name="T">Тип значения (необязательно)</typeparam>

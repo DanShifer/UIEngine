@@ -254,7 +254,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="value">The source vector.</param>
         /// <returns>The absolute value vector.</returns>        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector2 Abs(Vector2 value) => new Vector2(Math.Abs(value.X), Math.Abs(value.Y));
+        public static Vector2 Abs(Vector2 value) => new Vector2(System.Math.Abs(value.X), System.Math.Abs(value.Y));
 
         /// <summary>
         /// Returns a vector whose elements are the square root of each of the source vector's elements.
@@ -262,7 +262,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="value">The source vector.</param>
         /// <returns>The square root vector.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector2 SquareRoot(Vector2 value) => new Vector2((Single)Math.Sqrt(value.X), (Single)Math.Sqrt(value.Y));
+        public static Vector2 SquareRoot(Vector2 value) => new Vector2((Single)System.Math.Sqrt(value.X), (Single)System.Math.Sqrt(value.Y));
         #endregion Public Static Methods       
 
         #region Public Static Methods
@@ -280,7 +280,7 @@ namespace UIEngine.Mathematics.Vector
 
             float ls = dx * dx + dy * dy;
 
-            return (float)Math.Sqrt(ls);
+            return (float)System.Math.Sqrt(ls);
         }
 
         /// <summary>

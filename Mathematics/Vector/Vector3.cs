@@ -273,7 +273,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="value">The source vector.</param>
         /// <returns>The absolute value vector.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3 Abs(Vector3 value) => new Vector3(Math.Abs(value.X), Math.Abs(value.Y), Math.Abs(value.Z));
+        public static Vector3 Abs(Vector3 value) => new Vector3(System.Math.Abs(value.X), System.Math.Abs(value.Y), System.Math.Abs(value.Z));
 
         /// <summary>
         /// Returns a vector whose elements are the square root of each of the source vector's elements.
@@ -281,7 +281,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="value">The source vector.</param>
         /// <returns>The square root vector.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3 SquareRoot(Vector3 value) => new Vector3((Single)Math.Sqrt(value.X), (Single)Math.Sqrt(value.Y), (Single)Math.Sqrt(value.Z));
+        public static Vector3 SquareRoot(Vector3 value) => new Vector3((Single)System.Math.Sqrt(value.X), (Single)System.Math.Sqrt(value.Y), (Single)System.Math.Sqrt(value.Z));
 
         /// <summary>
         /// Returns the Euclidean distance between the two given points.
@@ -294,7 +294,7 @@ namespace UIEngine.Mathematics.Vector
         {
             Vector3 difference = value1 - value2;
             float ls = Dot(difference, difference);
-            return (float)Math.Sqrt(ls);
+            return (float)System.Math.Sqrt(ls);
         }
 
         /// <summary>
