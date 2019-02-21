@@ -11,6 +11,13 @@
         unsafe T Read<T>(int Address);
 
         /// <summary>
+        /// Читает из процесса текст по определенному адресу
+        /// </summary>
+        /// <param name="Address">Адрес для чтения</param>
+        /// <returns></returns>
+        string ReadString(int Address, uint Size);
+
+        /// <summary>
         /// Записывает в память значение по определенному адресу
         /// </summary>
         /// <typeparam name="T">Тип значения (необязательно)</typeparam>
