@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using UIEngine.Mathematics.Helper;
+﻿using System.Runtime.CompilerServices;
 
 namespace UIEngine.Mathematics.Vector
 {
@@ -9,31 +7,31 @@ namespace UIEngine.Mathematics.Vector
         /// <summary>
         /// The X component of the vector.
         /// </summary>
-        public Single X;
+        public float X;
 
         /// <summary>
         /// The Y component of the vector.
         /// </summary>
-        public Single Y;
+        public float Y;
 
         /// <summary>
         /// The Z component of the vector.
         /// </summary>
-        public Single Z;
+        public float Z;
 
         #region Constructors
         /// <summary>
         /// Constructs a vector whose elements are all the single specified value.
         /// </summary>
         /// <param name="value">The element to fill the vector with.</param>
-        public Vector3(Single value) : this(value, value, value) { }
+        public Vector3(float value) : this(value, value, value) { }
 
         /// <summary>
         /// Constructs a Vector3 from the given Vector2 and a third value.
         /// </summary>
         /// <param name="value">The Vector to extract X and Y components from.</param>
         /// <param name="z">The Z component.</param>
-        public Vector3(Vector2 value, Single z) : this(value.X, value.Y, z) { }
+        public Vector3(Vector2 value, float z) : this(value.X, value.Y, z) { }
 
         /// <summary>
         /// Constructs a vector with the given individual elements.
@@ -41,7 +39,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="x">The X component.</param>
         /// <param name="y">The Y component.</param>
         /// <param name="z">The Z component.</param>
-        public Vector3(Single x, Single y, Single z)
+        public Vector3(float x, float y, float z)
         {
             X = x;
             Y = y;
@@ -111,7 +109,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="right">The scalar value.</param>
         /// <returns>The scaled vector.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3 operator *(Vector3 left, Single right) => left * new Vector3(right);
+        public static Vector3 operator *(Vector3 left, float right) => left * new Vector3(right);
 
         /// <summary>
         /// Multiplies a vector by the given scalar.
@@ -120,7 +118,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="right">The source vector.</param>
         /// <returns>The scaled vector.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3 operator *(Single left, Vector3 right) => new Vector3(left) * right;
+        public static Vector3 operator *(float left, Vector3 right) => new Vector3(left) * right;
 
         /// <summary>
         /// Divides the first vector by the second.
@@ -202,7 +200,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="right">The scalar value.</param>
         /// <returns>The scaled vector.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3 Multiply(Vector3 left, Single right) => left * right;
+        public static Vector3 Multiply(Vector3 left, float right) => left * right;
 
         /// <summary>
         /// Multiplies a vector by the given scalar.
@@ -211,7 +209,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="right">The source vector.</param>
         /// <returns>The scaled vector.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3 Multiply(Single left, Vector3 right) => left * right;
+        public static Vector3 Multiply(float left, Vector3 right) => left * right;
 
         /// <summary>
         /// Divides the first vector by the second.
@@ -229,7 +227,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="divisor">The scalar value.</param>
         /// <returns>The result of the division.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3 Divide(Vector3 left, Single divisor) => left / divisor;
+        public static Vector3 Divide(Vector3 left, float divisor) => left / divisor;
 
         /// <summary>
         /// Negates a given vector.
@@ -281,7 +279,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="value">The source vector.</param>
         /// <returns>The square root vector.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3 SquareRoot(Vector3 value) => new Vector3((Single)System.Math.Sqrt(value.X), (Single)System.Math.Sqrt(value.Y), (Single)System.Math.Sqrt(value.Z));
+        public static Vector3 SquareRoot(Vector3 value) => new Vector3((float)System.Math.Sqrt(value.X), (float)System.Math.Sqrt(value.Y), (float)System.Math.Sqrt(value.Z));
 
         /// <summary>
         /// Returns the Euclidean distance between the two given points.

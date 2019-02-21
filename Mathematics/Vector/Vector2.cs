@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using UIEngine.Mathematics.Helper;
+﻿using System.Runtime.CompilerServices;
 
 namespace UIEngine.Mathematics.Vector
 {
@@ -9,25 +7,25 @@ namespace UIEngine.Mathematics.Vector
         /// <summary>
         /// The X component of the vector.
         /// </summary>
-        public Single X;
+        public float X;
         /// <summary>
         /// The Y component of the vector.
         /// </summary>
-        public Single Y;
+        public float Y;
 
         #region Constructors
         /// <summary>
         /// Constructs a vector whose elements are all the single specified value.
         /// </summary>
         /// <param name="value">The element to fill the vector with.</param>
-        public Vector2(Single value) : this(value, value) { }
+        public Vector2(float value) : this(value, value) { }
 
         /// <summary>
         /// Constructs a vector with the given individual elements.
         /// </summary>
         /// <param name="x">The X component.</param>
         /// <param name="y">The Y component.</param>
-        public Vector2(Single x, Single y)
+        public Vector2(float x, float y)
         {
             X = x;
             Y = y;
@@ -91,7 +89,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="right">The source vector.</param>
         /// <returns>The scaled vector.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector2 operator *(Single left, Vector2 right) => new Vector2(left, left) * right;
+        public static Vector2 operator *(float left, Vector2 right) => new Vector2(left, left) * right;
 
         /// <summary>
         /// Multiplies a vector by the given scalar.
@@ -100,7 +98,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="right">The scalar value.</param>
         /// <returns>The scaled vector.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector2 operator *(Vector2 left, Single right) => left * new Vector2(right, right);
+        public static Vector2 operator *(Vector2 left, float right) => left * new Vector2(right, right);
 
         /// <summary>
         /// Divides the first vector by the second.
@@ -182,7 +180,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="right">The scalar value.</param>
         /// <returns>The scaled vector.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector2 Multiply(Vector2 left, Single right) => left * right;
+        public static Vector2 Multiply(Vector2 left, float right) => left * right;
 
         /// <summary>
         /// Multiplies a vector by the given scalar.
@@ -191,7 +189,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="right">The source vector.</param>
         /// <returns>The scaled vector.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector2 Multiply(Single left, Vector2 right) => left * right;
+        public static Vector2 Multiply(float left, Vector2 right) => left * right;
 
         /// <summary>
         /// Divides the first vector by the second.
@@ -209,7 +207,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="divisor">The scalar value.</param>
         /// <returns>The result of the division.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector2 Divide(Vector2 left, Single divisor) => left / divisor;
+        public static Vector2 Divide(Vector2 left, float divisor) => left / divisor;
 
         /// <summary>
         /// Negates a given vector.
@@ -262,7 +260,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="value">The source vector.</param>
         /// <returns>The square root vector.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector2 SquareRoot(Vector2 value) => new Vector2((Single)System.Math.Sqrt(value.X), (Single)System.Math.Sqrt(value.Y));
+        public static Vector2 SquareRoot(Vector2 value) => new Vector2((float)System.Math.Sqrt(value.X), (float)System.Math.Sqrt(value.Y));
         #endregion Public Static Methods       
 
         #region Public Static Methods
