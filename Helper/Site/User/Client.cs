@@ -1,4 +1,5 @@
-﻿using System.Management;
+﻿using System.Linq;
+using System.Management;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -23,6 +24,16 @@ namespace UIEngine.Helper.Site.User
             return Hash.ToUpper();
         }
 
+        /// <summary>
+        /// Получение ID процессора
+        /// </summary>
+        /// <returns></returns>
+        public static string ProcessorId() => (from Processor in new ManagementObjectSearcher("SELECT * FROM Win32_Processor").Get().OfType<ManagementBaseObject>() select Processor.GetPropertyValue("ProcessorId")).First().ToString();
+
+        /// <summary>
+        /// Генерация уникального ID компьютера
+        /// </summary>
+        /// <returns></returns>
         public static string GenerateComputerID()
         {
             //Creates the HWID from the ProcessorID, Video Controller RAM and the size of the disk drive ; you can change this of course
