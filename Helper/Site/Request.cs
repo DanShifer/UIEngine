@@ -16,24 +16,10 @@ namespace UIEngine.Helper.Site
 
         private Dictionary<string, string> KeyValuePairs = new Dictionary<string, string>();
 
-        public Request(string Address,RequestMethod RequestMethod)
+        public Request(string Address, RequestMethod RequestMethod = RequestMethod.POST)
         {
             this.Address = Address;
             this.RequestMethod = RequestMethod;
-
-            this.WebRequest = WebRequest.Create(this.Address);
-
-            switch (RequestMethod)
-            {
-                case RequestMethod.GET:
-                    this.WebRequest.Method = "GET";
-                    break;
-                case RequestMethod.POST:
-                    this.WebRequest.Method = "POST";
-                    break;
-            }
-
-            this.WebRequest.ContentType = "application/x-www-form-urlencoded";
         }
 
         public object this[string Param]
@@ -44,16 +30,22 @@ namespace UIEngine.Helper.Site
         public string GetRespone()
         {
             string ReadResponse = null;
-            
-            this.WebRequest.ContentLength = GetParam().Length;
 
-            using (Stream StreamRequest = this.WebRequest.GetRequestStream())
+            this.WebRequest = this.RequestMethod == RequestMethod.GET ? WebRequest.Create(this.Address + Encoding.UTF8.GetString(GetParam())) : WebRequest.Create(this.Address);
+
+            this.WebRequest.Method = this.RequestMethod == RequestMethod.GET ? "GET" : "POST";
+            this.WebRequest.ContentType = "application/x-www-form-urlencoded";
+
+            if (this.RequestMethod == RequestMethod.POST)
             {
-                StreamRequest.Write(GetParam(), 0, GetParam().Length);
+                this.WebRequest.ContentLength = GetParam().Length;
+                using (Stream StreamRequest = this.WebRequest.GetRequestStream())
+                {
+                    StreamRequest.Write(GetParam(), 0, GetParam().Length);
+                }
             }
 
             this.WebResponse = this.WebRequest.GetResponse();
-
             using (Stream StreamResponse = WebResponse.GetResponseStream())
             {
                 using (StreamReader StreamReader = new StreamReader(StreamResponse))
@@ -76,11 +68,11 @@ namespace UIEngine.Helper.Site
                     Params += Param.Key + "=" + Param.Value + "&";
                 }
 
-                return Encoding.UTF8.GetBytes(Params.TrimEnd('&'));
+                return this.RequestMethod == RequestMethod.GET? Encoding.UTF8.GetBytes(Params.Insert(0, "?").TrimEnd('&')): Encoding.UTF8.GetBytes(Params.TrimEnd('&'));
             }
             catch
             {
-               return new byte[1];
+                return new byte[1];
             }
         }
     }
