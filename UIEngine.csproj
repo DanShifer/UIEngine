@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="API\KernelAPI.cs" />
     <Compile Include="API\UserAPI.cs" />
+    <Compile Include="Helper\Enum\MouseEvent.cs" />
     <Compile Include="Helper\Enum\ProcessAccess.cs" />
     <Compile Include="Helper\Enum\RequestMethod.cs" />
     <Compile Include="Helper\Funct.cs" />

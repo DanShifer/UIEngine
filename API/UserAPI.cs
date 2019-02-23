@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using UIEngine.Helper.Enum;
 
 namespace UIEngine.API
 {
@@ -15,7 +16,7 @@ namespace UIEngine.API
         /// <param name="dwData"></param>
         /// <param name="dwExtraInfo"></param>
         [DllImport("user32.dll")]
-        static extern void mouse_event(uint dwFlags, int dx, int dy, uint dwData,int dwExtraInfo);
+        static extern void mouse_event(MouseEvent dwFlags, int dx, int dy, uint dwData,int dwExtraInfo);
 
         /// <summary>
         /// Проверка нажатой клавиши
