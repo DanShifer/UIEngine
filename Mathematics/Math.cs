@@ -13,7 +13,7 @@
         public static T Pow<T>(this T One, dynamic Two)
         {
             dynamic Number = One;
-
+        
             for(int UINT=1;UINT<Two;UINT++)
             {
                 One *= Number;
