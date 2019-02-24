@@ -28,15 +28,20 @@ namespace UIEngine.Helper.Site.User
         /// Получение ID процессора
         /// </summary>
         /// <returns></returns>
-        public static string ProcessorId() => (from Processor in new ManagementObjectSearcher("SELECT * FROM Win32_Processor").Get().OfType<ManagementBaseObject>() select Processor.GetPropertyValue("ProcessorId")).First().ToString();
+        public static string GetProcessorId() => (from Processor in new ManagementObjectSearcher("SELECT * FROM Win32_Processor").Get().OfType<ManagementBaseObject>() select Processor.GetPropertyValue("ProcessorId")).First().ToString();
+
+        /// <summary>
+        /// Получение операционной системы
+        /// </summary>
+        /// <returns></returns>
+        public static string GetOperatingSystem() => (from Operating in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().OfType<ManagementObject>() select Operating.GetPropertyValue("Caption")).First().ToString();
 
         /// <summary>
         /// Генерация уникального ID компьютера
         /// </summary>
         /// <returns></returns>
-        public static string GenerateComputerID()
+        public static string GetComputerID()
         {
-            //Creates the HWID from the ProcessorID, Video Controller RAM and the size of the disk drive ; you can change this of course
             StringBuilder computerID = new StringBuilder();
             ManagementObjectSearcher searcher;
 
