@@ -1,6 +1,6 @@
 ﻿namespace UIEngine.Helper.Enum
 {
-    public enum DockLine
+    internal enum DockLine
     {
         None = 0,
         Top = 1,
