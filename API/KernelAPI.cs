@@ -17,6 +17,14 @@ namespace UIEngine.API
         internal static extern IntPtr OpenProcess(uint dwDesiredAccess, bool bInheritHandle, int dwProcessId);
 
         /// <summary>
+        /// Закрытие хандла процесса
+        /// </summary>
+        /// <param name="hHandle">Handle Process</param>
+        /// <returns></returns>
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool CloseHandle(IntPtr hHandle);
+
+        /// <summary>
         /// Чтение из памяти
         /// </summary>
         /// <param name="hProcess"></param>
