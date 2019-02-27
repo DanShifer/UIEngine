@@ -83,7 +83,7 @@ namespace UIEngine.Memory
         /// <typeparam name="T">Тип значения, которое надо прочитать</typeparam>
         /// <param name="Address">Адрес для чтения</param>
         /// <returns></returns>
-        public unsafe T Read<T>(int Address)
+        public virtual unsafe T Read<T>(int Address)
         {
             fixed (byte* Byte = ReadBytes((IntPtr)Address, (uint)Marshal<T>.Size))
             {
@@ -96,7 +96,7 @@ namespace UIEngine.Memory
         /// </summary>
         /// <param name="Address">Адрес для чтения</param>
         /// <returns></returns>
-        public string ReadString(int Address,uint Size) => Encoding.UTF8.GetString(ReadBytes((IntPtr)Address,Size));
+        public virtual string ReadString(int Address,uint Size) => Encoding.UTF8.GetString(ReadBytes((IntPtr)Address,Size));
 
         /// <summary>
         /// Записывает в память значение по определенному адресу
@@ -104,7 +104,7 @@ namespace UIEngine.Memory
         /// <typeparam name="T">Тип значения (необязательно)</typeparam>
         /// <param name="Address">Адрес для записи</param>
         /// <param name="Value">Само значение</param>
-        public unsafe void Write<T>(int Address, T Value)
+        public virtual unsafe void Write<T>(int Address, T Value)
         {
             byte[] Buffer;
 
