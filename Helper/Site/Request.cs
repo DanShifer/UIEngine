@@ -22,12 +22,12 @@ namespace UIEngine.Helper.Site
             this.RequestMethod = RequestMethod;
         }
 
-        public object this[string Param]
+        public virtual object this[string Param]
         {
             set => KeyValuePairs.Add(Param, value.ToString());
         }
 
-        public string GetRespone()
+        public virtual string GetRespone()
         {
             string ReadResponse = null;
 
