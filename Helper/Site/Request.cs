@@ -8,8 +8,8 @@ namespace UIEngine.Helper.Site
 {
     public class Request
     {
-        private string Address = null;
-        private RequestMethod RequestMethod;
+        private readonly string Address = null;
+        private readonly RequestMethod RequestMethod;
 
         private WebRequest WebRequest;
         private WebResponse WebResponse;
