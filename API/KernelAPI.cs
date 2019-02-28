@@ -22,7 +22,7 @@ namespace UIEngine.API
         /// <param name="hHandle">Handle Process</param>
         /// <returns></returns>
         [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool CloseHandle(IntPtr hHandle);
+        public static extern bool CloseHandle(IntPtr hHandle);
 
         /// <summary>
         /// Чтение из памяти
