@@ -6,7 +6,7 @@ using UIEngine.Helper.Enum;
 
 namespace UIEngine.Helper.Site
 {
-    class Request
+    public class Request
     {
         private string Address = null;
         private RequestMethod RequestMethod;
