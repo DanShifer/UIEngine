@@ -65,17 +65,7 @@ namespace UIEngine.Memory
         /// <param name="ProcessOffset">Смещение</param>
         /// <param name="ProcessBytes">Байты процесса</param>
         /// <returns></returns>
-        private bool WriteBytes(IntPtr ProcessOffset, byte[] ProcessBytes)
-        {
-            try
-            {
-                return KernelAPI.WriteProcessMemory(ProcessHandle, ProcessOffset, ProcessBytes, (uint)ProcessBytes.Length, 0U);
-            }
-            catch
-            {
-                return false;
-            }
-        }
+        private bool WriteBytes(IntPtr ProcessOffset, byte[] ProcessBytes) => KernelAPI.WriteProcessMemory(ProcessHandle, ProcessOffset, ProcessBytes, (uint)ProcessBytes.Length, 0U);
 
         /// <summary>
         /// Читает из процесса значение по определенному адресу
