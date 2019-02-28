@@ -8,7 +8,9 @@ namespace UIEngine.Helper.Menu.Additional
     {
         #region Params
         private Color CLine = Color.Purple;
-        private DockLine DLine = Enum.DockLine.None;
+    
+        private DockLine DLine = DockLine.None;
+
         private int WLine = 1;
         #endregion
 
