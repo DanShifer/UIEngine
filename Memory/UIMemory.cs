@@ -39,6 +39,11 @@ namespace UIEngine.Memory
         }
 
         /// <summary>
+        /// Деструктор, закрывающий Хандл
+        /// </summary>
+        ~UIMemory()=> KernelAPI.CloseHandle(ProcessHandle);
+
+        /// <summary>
         /// Чтение байтов
         /// </summary>
         /// <param name="ProcessOffset">Смещение</param>
