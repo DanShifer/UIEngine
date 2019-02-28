@@ -68,7 +68,7 @@ namespace UIEngine.Helper.Site
                     Params += Param.Key + "=" + Param.Value + "&";
                 }
 
-                return this.RequestMethod == RequestMethod.GET? Encoding.UTF8.GetBytes(Params.Insert(0, "?").TrimEnd('&')): Encoding.UTF8.GetBytes(Params.TrimEnd('&'));
+                return this.RequestMethod == RequestMethod.GET ? Encoding.UTF8.GetBytes(Params.Insert(0, "?").TrimEnd('&')) : Encoding.UTF8.GetBytes(Params.TrimEnd('&'));
             }
             catch
             {
