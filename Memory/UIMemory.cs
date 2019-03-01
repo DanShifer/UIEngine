@@ -10,7 +10,7 @@ using UIEngine.Memory.Helper;
 
 namespace UIEngine.Memory
 {
-    public class UIMemory:IMemory
+    public class UIMemory:IMemory,IDisposable
     {
         /// <summary>
         /// Хандл процесса
@@ -39,9 +39,9 @@ namespace UIEngine.Memory
         }
 
         /// <summary>
-        /// Деструктор, закрывающий Хандл
+        /// Метод, закрывающий Хандл
         /// </summary>
-        ~UIMemory()=> KernelAPI.CloseHandle(ProcessHandle);
+        public void Dispose() => KernelAPI.CloseHandle(ProcessHandle);
 
         /// <summary>
         /// Чтение байтов
