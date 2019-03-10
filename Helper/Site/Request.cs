@@ -27,6 +27,7 @@ namespace UIEngine.Helper.Site
             set => KeyValuePairs.Add(Param, value.ToString());
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Не ликвидировать объекты несколько раз")]
         public virtual string GetRespone()
         {
             string ReadResponse = null;

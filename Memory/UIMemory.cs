@@ -10,7 +10,8 @@ using UIEngine.Memory.Helper;
 
 namespace UIEngine.Memory
 {
-    public class UIMemory:IMemory,IDisposable
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
+    public class UIMemory:IMemory
     {
         /// <summary>
         /// Хандл процесса
@@ -28,7 +29,7 @@ namespace UIEngine.Memory
         /// </summary>
         /// <param name="ProcessName">Имя процесса</param>
         /// <param name="Modules">Колекция модулей</param>
-        public UIMemory(string ProcessName,Dictionary<string,int> Modules, ProcessAccess ProcessAccess)
+        public UIMemory(string ProcessName,ref Dictionary<string,int> Modules, ProcessAccess ProcessAccess)
         {
             ProcessHandle = KernelAPI.OpenProcess((uint)ProcessAccess, false, Process.GetProcessesByName(ProcessName)[0].Id);
 
@@ -39,9 +40,9 @@ namespace UIEngine.Memory
         }
 
         /// <summary>
-        /// Метод, закрывающий Хандл
+        /// Дескриптор, закрывающий Хандл
         /// </summary>
-        public void Dispose() => KernelAPI.CloseHandle(ProcessHandle);
+        ~UIMemory() => KernelAPI.CloseHandle(ProcessHandle);
 
         /// <summary>
         /// Чтение байтов
@@ -51,17 +52,10 @@ namespace UIEngine.Memory
         /// <returns></returns>
         private byte[] ReadBytes(IntPtr ProcessOffset, uint ProcessSize)
         {
-            try
-            {
-                byte[] LpBuffer = new byte[(int)(IntPtr)ProcessSize];
-                KernelAPI.ReadProcessMemory(ProcessHandle, ProcessOffset, LpBuffer, ProcessSize, 0U);
+            byte[] LpBuffer = new byte[(int)(IntPtr)ProcessSize];
+            KernelAPI.ReadProcessMemory(ProcessHandle, ProcessOffset, LpBuffer, ProcessSize, 0U);
 
-                return LpBuffer;
-            }
-            catch
-            {
-                return new byte[1];
-            }
+            return LpBuffer;
         }
 
         /// <summary>

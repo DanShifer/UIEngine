@@ -52,15 +52,11 @@
   <ItemGroup>
     <Compile Include="API\KernelAPI.cs" />
     <Compile Include="API\UserAPI.cs" />
-    <Compile Include="Helper\Enum\DockLine.cs" />
     <Compile Include="Helper\Enum\MouseEvent.cs" />
     <Compile Include="Helper\Enum\ProcessAccess.cs" />
     <Compile Include="Helper\Enum\RequestMethod.cs" />
     <Compile Include="Helper\Funct.cs" />
     <Compile Include="Helper\Interface\IMemory.cs" />
-    <Compile Include="Helper\Menu\Additional\UILabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Helper\Site\Request.cs" />
     <Compile Include="Helper\Site\User\Client.cs" />
     <Compile Include="Mathematics\Helper\Module\Aim.cs" />
