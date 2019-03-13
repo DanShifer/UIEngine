@@ -56,6 +56,7 @@
     <Compile Include="Helper\Enum\ProcessAccess.cs" />
     <Compile Include="Helper\Enum\RequestMethod.cs" />
     <Compile Include="Helper\Funct.cs" />
+    <Compile Include="Helper\Interface\IAim.cs" />
     <Compile Include="Helper\Interface\IMemory.cs" />
     <Compile Include="Helper\Site\Request.cs" />
     <Compile Include="Helper\Site\User\Client.cs" />
