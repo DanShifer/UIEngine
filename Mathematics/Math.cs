@@ -36,8 +36,8 @@
 
         public static T Factorial<T>(this int Number) => Number == 0 ? 1 : Number * Factorial<dynamic>(Number - 1);
 
-        public static T RAD2DEG<T>(dynamic Yaw) => Yaw * (180f / (dynamic)System.Math.PI);
+        public static T RadTwoDegrees<T>(dynamic Yaw) => Yaw * (180f / (dynamic)System.Math.PI);
 
-        public static T DEG2RAD<T>(dynamic Yaw) => Yaw * ((dynamic)System.Math.PI / 180f);
+        public static T DegreesTwoRad<T>(dynamic Yaw) => Yaw * ((dynamic)System.Math.PI / 180f);
     }
 }
