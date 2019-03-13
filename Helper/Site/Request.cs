@@ -22,7 +22,7 @@ namespace UIEngine.Helper.Site
             this.RequestMethod = RequestMethod;
         }
 
-        public virtual object this[string Param]
+        public object this[string Param]
         {
             set => KeyValuePairs.Add(Param, value.ToString());
         }
