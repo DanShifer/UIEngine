@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -30,32 +31,39 @@ namespace UIEngine.Helper.Site
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Не ликвидировать объекты несколько раз")]
         public virtual string GetRespone()
         {
-            string ReadResponse = null;
-
-            this.WebRequest = this.RequestMethod == RequestMethod.GET ? WebRequest.Create(this.Address + Encoding.UTF8.GetString(GetParam())) : WebRequest.Create(this.Address);
-
-            this.WebRequest.Method = this.RequestMethod == RequestMethod.GET ? "GET" : "POST";
-            this.WebRequest.ContentType = "application/x-www-form-urlencoded";
-
-            if (this.RequestMethod == RequestMethod.POST)
+            try
             {
-                this.WebRequest.ContentLength = GetParam().Length;
-                using (Stream StreamRequest = this.WebRequest.GetRequestStream())
-                {
-                    StreamRequest.Write(GetParam(), 0, GetParam().Length);
-                }
-            }
+                string ReadResponse = null;
 
-            this.WebResponse = this.WebRequest.GetResponse();
-            using (Stream StreamResponse = WebResponse.GetResponseStream())
+                this.WebRequest = this.RequestMethod == RequestMethod.GET ? WebRequest.Create(this.Address + Encoding.UTF8.GetString(GetParam())) : WebRequest.Create(this.Address);
+
+                this.WebRequest.Method = this.RequestMethod == RequestMethod.GET ? "GET" : "POST";
+                this.WebRequest.ContentType = "application/x-www-form-urlencoded";
+
+                if (this.RequestMethod == RequestMethod.POST)
+                {
+                    this.WebRequest.ContentLength = GetParam().Length;
+                    using (Stream StreamRequest = this.WebRequest.GetRequestStream())
+                    {
+                        StreamRequest.Write(GetParam(), 0, GetParam().Length);
+                    }
+                }
+
+                this.WebResponse = this.WebRequest.GetResponse();
+                using (Stream StreamResponse = WebResponse.GetResponseStream())
+                {
+                    using (StreamReader StreamReader = new StreamReader(StreamResponse))
+                    {
+                        ReadResponse += StreamReader.ReadToEnd();
+                    }
+                }
+
+                return ReadResponse;
+            }
+            catch(Exception EX)
             {
-                using (StreamReader StreamReader = new StreamReader(StreamResponse))
-                {
-                    ReadResponse += StreamReader.ReadToEnd();
-                }
+                return EX.Message;
             }
-
-            return ReadResponse;
         }
 
         private byte[] GetParam()
