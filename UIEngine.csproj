@@ -58,6 +58,7 @@
     <Compile Include="Helper\Funct.cs" />
     <Compile Include="Helper\Interface\IAim.cs" />
     <Compile Include="Helper\Interface\IMemory.cs" />
+    <Compile Include="Helper\Site\Helper\RequestHeader.cs" />
     <Compile Include="Helper\Site\Request.cs" />
     <Compile Include="Helper\Site\User\Client.cs" />
     <Compile Include="Mathematics\Helper\Module\Aim.cs" />
@@ -65,7 +66,9 @@
     <Compile Include="Mathematics\Math.cs" />
     <Compile Include="Mathematics\Vector\Vector2.cs" />
     <Compile Include="Mathematics\Vector\Vector3.cs" />
+    <Compile Include="Memory\Helper\HMemory.cs" />
     <Compile Include="Memory\Helper\Marshal.cs" />
+    <Compile Include="Memory\OldMemory.cs" />
     <Compile Include="Memory\UIMemory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
