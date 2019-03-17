@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using UIEngine.API;
@@ -11,66 +10,25 @@ using UIEngine.Memory.Helper;
 namespace UIEngine.Memory
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
-    public class UIMemory : IMemory
+    public class UIMemory :HMemory, IMemory
     {
-        /// <summary>
-        /// Хандл процесса
-        /// </summary>
-        private readonly IntPtr ProcessHandle;
-
-        /// <summary>
-        /// Коллекция адресов модулей
-        /// </summary>
-        private readonly Dictionary<string, int> Modules;
-
         /// <summary>
         /// Получение хандла
         /// </summary>
         /// <param name="ProcessName">Имя процесса</param>
-        public UIMemory(string ProcessName, ProcessAccess ProcessAccess) => ProcessHandle = KernelAPI.OpenProcess((uint)ProcessAccess, false, Process.GetProcessesByName(ProcessName)[0].Id);
+        public UIMemory(string ProcessName, ProcessAccess ProcessAccess) : base(ProcessName, ProcessAccess) { }
 
         /// <summary>
         /// Получение хандла с получением загруженных модулей процесса
         /// </summary>
         /// <param name="ProcessName">Имя процесса</param>
         /// <param name="Modules">Колекция модулей</param>
-        public UIMemory(string ProcessName, ref Dictionary<string, int> Modules, ProcessAccess ProcessAccess)
-        {
-            ProcessHandle = KernelAPI.OpenProcess((uint)ProcessAccess, false, Process.GetProcessesByName(ProcessName)[0].Id);
-            this.Modules = Modules;
-
-            foreach (ProcessModule UIModule in Process.GetProcessesByName(ProcessName)[0].Modules)
-            {
-                Modules.Add(UIModule.ModuleName, (int)UIModule.BaseAddress);
-            }
-        }
+        public UIMemory(string ProcessName, ref Dictionary<string, int> Modules, ProcessAccess ProcessAccess) : base(ProcessName, ref Modules, ProcessAccess) { }
 
         /// <summary>
         /// Дескриптор, закрывающий Хандл
         /// </summary>
         ~UIMemory() => KernelAPI.CloseHandle(ProcessHandle);
-
-        /// <summary>
-        /// Чтение байтов
-        /// </summary>
-        /// <param name="ProcessOffset">Смещение</param>
-        /// <param name="ProcessSize">Размер процесса</param>
-        /// <returns></returns>
-        private byte[] ReadBytes(IntPtr ProcessOffset, uint ProcessSize)
-        {
-            byte[] LpBuffer = new byte[(int)(IntPtr)ProcessSize];
-            KernelAPI.ReadProcessMemory(ProcessHandle, ProcessOffset, LpBuffer, ProcessSize, 0U);
-
-            return LpBuffer;
-        }
-
-        /// <summary>
-        /// Запись байтов
-        /// </summary>
-        /// <param name="ProcessOffset">Смещение</param>
-        /// <param name="ProcessBytes">Байты процесса</param>
-        /// <returns></returns>
-        private bool WriteBytes(IntPtr ProcessOffset, byte[] ProcessBytes) => KernelAPI.WriteProcessMemory(ProcessHandle, ProcessOffset, ProcessBytes, (uint)ProcessBytes.Length, 0U);
 
         /// <summary>
         /// Читает из процесса значение по определенному адресу
