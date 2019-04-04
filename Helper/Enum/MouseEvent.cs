@@ -1,5 +1,8 @@
 ﻿namespace UIEngine.Helper.Enum
 {
+    /// <summary>
+    /// Коды событий мыши
+    /// </summary>
     public enum MouseEvent:uint
     {
         MOUSEEVENTF_ABSOLUTE = 0x8000,
