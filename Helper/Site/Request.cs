@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using UIEngine.Helper.Enum;
 using UIEngine.Helper.Site.Helper;
 
@@ -18,19 +19,20 @@ namespace UIEngine.Helper.Site
         private HttpWebResponse HttpWebResponse;
         private RequestHeader RequestHeader;
 
-        private Dictionary<string, string> KeyValuePairs = new Dictionary<string, string>();
+        private static Dictionary<string, string> ParamsValue = new Dictionary<string, string>();
         #endregion
 
         public Request(string Address, RequestMethod RequestMethod = RequestMethod.POST, RequestHeader RequestHeader = null)
         {
             this.Address = Address;
+        
             this.RequestMethod = RequestMethod;
             this.RequestHeader = RequestHeader;
         }
 
         public object this[string Param]
         {
-            set => KeyValuePairs.Add(Param, value.ToString());
+            set => ParamsValue.Add(Param, value.ToString());
         }
 
         #region Params
@@ -53,6 +55,7 @@ namespace UIEngine.Helper.Site
         }
         #endregion
 
+        #region Methods
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Не ликвидировать объекты несколько раз")]
         public string GetRespone()
         {
@@ -66,7 +69,7 @@ namespace UIEngine.Helper.Site
 
                 if (RequestHeader != null)
                 {
-                    foreach (var Headers in RequestHeader?.KeyValuePairs)
+                    foreach (var Headers in RequestHeader?.RequestValue)
                     {
                         this.HttpWebRequest.Headers.Add(Headers.Key, Headers.Value);
                     }
@@ -79,6 +82,7 @@ namespace UIEngine.Helper.Site
                 if (this.RequestMethod == RequestMethod.POST)
                 {
                     this.HttpWebRequest.ContentLength = GetParam().Length;
+
                     using (Stream StreamRequest = this.HttpWebRequest.GetRequestStream())
                     {
                         StreamRequest.Write(GetParam(), 0, GetParam().Length);
@@ -86,14 +90,12 @@ namespace UIEngine.Helper.Site
                 }
 
                 this.HttpWebResponse = (HttpWebResponse)this.HttpWebRequest.GetResponse();
-                using (Stream StreamResponse = HttpWebResponse.GetResponseStream())
+            
+                using (StreamReader StreamReader = new StreamReader(HttpWebResponse.GetResponseStream()))
                 {
-                    using (StreamReader StreamReader = new StreamReader(StreamResponse))
-                    {
-                        ReadResponse += StreamReader.ReadToEnd();
-                    }
+                    ReadResponse += StreamReader.ReadToEnd();
                 }
-
+            
                 return ReadResponse;
             }
             catch (Exception EX)
@@ -102,13 +104,17 @@ namespace UIEngine.Helper.Site
             }
         }
 
+        public async Task<string> GetResponeAsync() => await Task.Run(() => GetRespone());
+        #endregion
+
+        #region Helper Methods
         private byte[] GetParam()
         {
             try
             {
                 string Params = null;
 
-                foreach (var Param in KeyValuePairs)
+                foreach (var Param in ParamsValue)
                 {
                     Params += Param.Key + "=" + Param.Value + "&";
                 }
@@ -120,5 +126,6 @@ namespace UIEngine.Helper.Site
                 return new byte[1];
             }
         }
+        #endregion
     }
 }
