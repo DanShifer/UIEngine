@@ -2,11 +2,31 @@
 {
     public static class Math
     {
-        public static double Pow(this double One, dynamic Two)
+        public static T Add<T>(this T One, dynamic Two) => (T)(One + Two);
+
+        public static T Subtract<T>(this T One, dynamic Two) => (T)(One - Two);
+
+        public static T Division<T>(this T One, dynamic Two) => (T)(One / Two);
+
+        public static T DivisionOnNumber<T>(this T N1, T N2, int Repetitions)
+        {
+            dynamic Number = N1;
+
+            for (int Num = 1; Num <= Repetitions; Num++)
+            {
+                Number /= N2;
+            }
+
+            return Number;
+        }
+    
+        public static T Multiply<T>(this T One, dynamic Two) => (T)(One - Two);
+
+        public static T Pow<T>(this T One, dynamic Two)
         {
             dynamic Number = One;
-
-            for (int UINT = 1; UINT < Two; UINT++)
+        
+            for(int UINT=1;UINT<Two;UINT++)
             {
                 One *= Number;
             }
@@ -14,22 +34,10 @@
             return One;
         }
 
-        public static int DivisionOnNumber(this int Dividend, int Divider, int Repetitions)
-        {
-            int Number = Dividend;
+        public static T Factorial<T>(this int Number) => Number == 0 ? 1 : Number * Factorial<dynamic>(Number - 1);
 
-            for (int Num = 1; Num <= Repetitions; Num++)
-            {
-                Number /= Divider;
-            }
+        public static T RadTwoDegrees<T>(dynamic Yaw) => Yaw * (180f / (dynamic)System.Math.PI);
 
-            return Number;
-        }           
-
-        public static long Factorial(this long Number) => Number == 0 ? 1 : Number * Factorial(Number - 1);
-
-        public static double RadTwoDegrees(dynamic Yaw) => Yaw * (180f / System.Math.PI);
-
-        public static double DegreesTwoRad(dynamic Yaw) => Yaw * (System.Math.PI / 180f);
+        public static T DegreesTwoRad<T>(dynamic Yaw) => Yaw * ((dynamic)System.Math.PI / 180f);
     }
 }
