@@ -34,7 +34,7 @@ namespace UIEngine.Helper.Site.User
         /// Получение операционной системы
         /// </summary>
         /// <returns></returns>
-        public static string GetOperatingSystem() => (from Operating in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().OfType<ManagementObject>() select Operating.GetPropertyValue("Caption")).First().ToString();
+        public static string GetOperatingSystem() => (from OperatingSystem in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().OfType<ManagementObject>() select OperatingSystem.GetPropertyValue("Caption")).First().ToString();
 
         /// <summary>
         /// Генерация уникального ID компьютера
@@ -42,28 +42,28 @@ namespace UIEngine.Helper.Site.User
         /// <returns></returns>
         public static string GetComputerID()
         {
-            StringBuilder computerID = new StringBuilder();
-            ManagementObjectSearcher searcher;
+            StringBuilder ComputerID = new StringBuilder();
+            ManagementObjectSearcher Searcher;
 
-            searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_Processor");
-            foreach (ManagementObject queryObj in searcher.Get())
+            Searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_Processor");
+            foreach (ManagementObject queryObj in Searcher.Get())
             {
-                computerID.Append(queryObj["ProcessorId"]);
+                ComputerID.Append(queryObj["ProcessorId"]);
             }
 
-            searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_VideoController");
-            foreach (ManagementObject queryObj in searcher.Get())
+            Searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_VideoController");
+            foreach (ManagementObject queryObj in Searcher.Get())
             {
-                computerID.Append(queryObj["AdapterRAM"]);
+                ComputerID.Append(queryObj["AdapterRAM"]);
             }
 
-            searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_DiskDrive");
-            foreach (ManagementObject queryObj in searcher.Get())
+            Searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_DiskDrive");
+            foreach (ManagementObject queryObj in Searcher.Get())
             {
-                computerID.Append(queryObj["Size"]);
+                ComputerID.Append(queryObj["Size"]);
             }
 
-            return computerID.ToString();
+            return ComputerID.ToString();
         }
     }
 }
