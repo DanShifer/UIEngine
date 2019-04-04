@@ -31,10 +31,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>UI.ico</ApplicationIcon>
+    <ApplicationIcon>WolfLogo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -52,11 +52,15 @@
   <ItemGroup>
     <Compile Include="API\KernelAPI.cs" />
     <Compile Include="API\UserAPI.cs" />
+    <Compile Include="Helper\Define\Helper\VariableConverter.cs" />
+    <Compile Include="Helper\Define\Variable\BOOLEAN.cs" />
+    <Compile Include="Helper\Define\Variable\DWORD.cs" />
+    <Compile Include="Helper\Define\Variable\HANDLE.cs" />
+    <Compile Include="Helper\Enum\KeysCode.cs" />
     <Compile Include="Helper\Enum\MouseEvent.cs" />
     <Compile Include="Helper\Enum\ProcessAccess.cs" />
     <Compile Include="Helper\Enum\RequestMethod.cs" />
     <Compile Include="Helper\Funct.cs" />
-    <Compile Include="Helper\Interface\IAim.cs" />
     <Compile Include="Helper\Interface\IMemory.cs" />
     <Compile Include="Helper\Site\Helper\RequestHeader.cs" />
     <Compile Include="Helper\Site\Request.cs" />
@@ -73,7 +77,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UI.ico" />
+    <Content Include="WolfLogo.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
