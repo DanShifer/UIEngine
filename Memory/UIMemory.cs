@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using UIEngine.API;
+using UIEngine.Helper.Define.Variable;
 using UIEngine.Helper.Enum;
 using UIEngine.Helper.Interface;
 using UIEngine.Memory.Helper;
@@ -10,7 +11,7 @@ using UIEngine.Memory.Helper;
 namespace UIEngine.Memory
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
-    public class UIMemory :HMemory, IMemory
+    public sealed class UIMemory : HMemory, IMemory
     {
         /// <summary>
         /// Получение хандла
@@ -23,7 +24,7 @@ namespace UIEngine.Memory
         /// </summary>
         /// <param name="ProcessName">Имя процесса</param>
         /// <param name="Modules">Колекция модулей</param>
-        public UIMemory(string ProcessName, ref Dictionary<string, int> Modules, ProcessAccess ProcessAccess) : base(ProcessName, ref Modules, ProcessAccess) { }
+        public UIMemory(string ProcessName, out Dictionary<string, int> Modules, ProcessAccess ProcessAccess) : base(ProcessName, out Modules, ProcessAccess) { }
 
         /// <summary>
         /// Дескриптор, закрывающий Хандл
@@ -31,20 +32,22 @@ namespace UIEngine.Memory
         ~UIMemory() => KernelAPI.CloseHandle(ProcessHandle);
 
         /// <summary>
-        /// Читает из процесса значение по определенному адресу
+        /// Читает из процесса значения по определенному адресу
         /// </summary>
-        /// <typeparam name="T">Тип значения, которое надо прочитать</typeparam>
-        /// <param name="Address">Адрес для чтения</param>
+        /// <typeparam name="T">Тип читаемого значения</typeparam>
+        /// <param name="Address">Адрес</param>
+        /// <param name="Size">Размер строки (Если тип является string)</param>
+        /// <param name="Module">Имя модуля, с которого читается адрес</param>
         /// <returns></returns>
-        public virtual unsafe T Read<T>(int Address, uint Size = 256, string Module = null)
+        public unsafe T Read<T>(int Address, uint Size = 0, string Module = null)
         {
             if (typeof(T) == typeof(string))
             {
-                return Module == null ? ReadBytes((IntPtr)Address, Size) : (dynamic)Encoding.UTF8.GetString(ReadBytes((IntPtr)Modules[Module] + Address, Size));
+                return Module == null ? (dynamic)Encoding.UTF8.GetString(ReadBytes((IntPtr)Address, Size)) : (dynamic)Encoding.UTF8.GetString(ReadBytes((IntPtr)(Modules[Module] + Address), Size));
             }
             else
             {
-                fixed (byte* Byte = Module == null ? ReadBytes((IntPtr)Address, (uint)Marshal<T>.Size) : ReadBytes((IntPtr)Modules[Module] + Address, (uint)Marshal<T>.Size))
+                fixed (byte* Byte = Module == null ? ReadBytes((IntPtr)Address, (uint)Marshal<T>.Size) : ReadBytes((IntPtr)(Modules[Module] + Address), (uint)Marshal<T>.Size))
                 {
                     return Marshal.PtrToStructure<T>((IntPtr)Byte);
                 }
@@ -57,7 +60,7 @@ namespace UIEngine.Memory
         /// <typeparam name="T">Тип значения (необязательно)</typeparam>
         /// <param name="Address">Адрес для записи</param>
         /// <param name="Value">Само значение</param>
-        public virtual unsafe void Write<T>(int Address, T Value, string Module = null)
+        public unsafe bool Write<T>(int Address, T Value, string Module = null)
         {
             byte[] Buffer;
 
@@ -75,7 +78,7 @@ namespace UIEngine.Memory
                 }
             }
 
-            WriteBytes((IntPtr)(Module == null ? Address : Modules[Module] + Address), Buffer);
+           return WriteBytes((IntPtr)(Module == null ? Address : Modules[Module] + Address), Buffer);
         }
     }
 }

@@ -39,12 +39,7 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="x">The X component.</param>
         /// <param name="y">The Y component.</param>
         /// <param name="z">The Z component.</param>
-        public Vector3(float x, float y, float z)
-        {
-            X = x;
-            Y = y;
-            Z = z;
-        }
+        public Vector3(float x, float y, float z) => (X, Y, Z) = (x, y, z);
         #endregion Constructors
 
         #region Public Static Properties

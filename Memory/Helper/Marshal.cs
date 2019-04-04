@@ -14,7 +14,7 @@ namespace UIEngine.Memory.Helper
         {
             if (typeof(T) == typeof(bool))
             {
-                Size = 0x1;
+                Size = 1;
             }
             else if (typeof(T).IsEnum)
             {
