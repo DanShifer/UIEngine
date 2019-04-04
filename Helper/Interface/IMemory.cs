@@ -16,6 +16,6 @@
         /// <typeparam name="T">Тип значения (необязательно)</typeparam>
         /// <param name="Address">Адрес для записи</param>
         /// <param name="Value">Само значение</param>
-        unsafe void Write<T>(int Address, T Value, string Module);
+        unsafe bool Write<T>(int Address, T Value, string Module);
     }
 }
