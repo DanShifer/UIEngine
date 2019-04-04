@@ -25,7 +25,11 @@ namespace UIEngine.Mathematics.Vector
         /// </summary>
         /// <param name="x">The X component.</param>
         /// <param name="y">The Y component.</param>
-        public Vector2(float x, float y) => (X, Y) = (x, y);
+        public Vector2(float x, float y)
+        {
+            X = x;
+            Y = y;
+        }
         #endregion Constructors
 
         #region Public Static Properties

@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using System.Text;
 using UIEngine.API;
-using UIEngine.Helper.Define.Helper;
-using UIEngine.Helper.Define.Variable;
 using UIEngine.Helper.Enum;
 using UIEngine.Memory.Helper;
 
 namespace UIEngine.Memory
 {
-    public sealed class OldMemory:HMemory
+    class OldMemory:HMemory
     {
         /// <summary>
         /// Получение хандла
@@ -22,7 +20,7 @@ namespace UIEngine.Memory
         /// </summary>
         /// <param name="ProcessName">Имя процесса</param>
         /// <param name="Modules">Колекция модулей</param>
-        public OldMemory(string ProcessName, out Dictionary<string, int> Modules, ProcessAccess ProcessAccess) : base(ProcessName, out Modules, ProcessAccess) { }
+        public OldMemory(string ProcessName, ref Dictionary<string, int> Modules, ProcessAccess ProcessAccess) : base(ProcessName, ref Modules, ProcessAccess) { }
 
         /// <summary>
         /// Дескриптор, закрывающий Хандл
@@ -31,107 +29,90 @@ namespace UIEngine.Memory
 
         #region Read
         /// <summary>
-        /// Конвертирует прочитанные байты в Boolean
+        /// Convert Read Byte in Boolean
         /// </summary>
-        /// <param name="Address">Адрес функции</param>
+        /// <param name="Address">Address function</param>
         /// <returns></returns>
-        public bool ReadBoolean(int Address) => BitConverter.ToBoolean(ReadBytes((IntPtr)Address, sizeof(bool)),0);
+        public bool ReadBoolean(int Address) => Convert.ToBoolean(ReadBytes((IntPtr)Address, sizeof(bool)));
 
         /// <summary>
-        /// Конвертирует прочитанные байты в BOOLEAN
+        /// Convert Read Byte in Decimal
         /// </summary>
-        /// <param name="Address">Адрес функции</param>
+        /// <param name="Address">Address function</param>
         /// <returns></returns>
-        public bool ReadBOOLEAN(int Address) => VariableConverter.ToBOOLEAN(ReadBytes((IntPtr)Address, (uint)Marshal.SizeOf(typeof(BOOLEAN))));
+        public decimal ReadDecimal(int Address) => Convert.ToDecimal(ReadBytes((IntPtr)Address, sizeof(decimal)));
 
         /// <summary>
-        /// Конвертирует прочитанные байты в Double
+        /// Convert Read Byte in Double
         /// </summary>
-        /// <param name="Address">Адрес функции</param>
+        /// <param name="Address">Address function</param>
         /// <returns></returns>
-        public double ReadDouble(int Address) => BitConverter.ToDouble(ReadBytes((IntPtr)Address, sizeof(double)),0);
+        public double ReadDouble(int Address) => Convert.ToDouble(ReadBytes((IntPtr)Address, sizeof(double)));
 
         /// <summary>
-        /// Конвертирует прочитанные байты в Single
+        /// Convert Read Byte in Single
         /// </summary>
-        /// <param name="Address">Адрес функции</param>
+        /// <param name="Address">Address function</param>
         /// <returns></returns>
-        public float ReadFloat(int Address) => BitConverter.ToSingle(ReadBytes((IntPtr)Address, sizeof(float)),0);
+        public float ReadFloat(int Address) => Convert.ToSingle(ReadBytes((IntPtr)Address, sizeof(float)));
 
         /// <summary>
-        /// Конвертирует прочитанные байты в Int16
+        /// Convert Read Byte in Int16
         /// </summary>
-        /// <param name="Address">Адрес функции</param>
+        /// <param name="Address">Address function</param>
         /// <returns></returns>
-        public short ReadShort(int Address) => BitConverter.ToInt16(ReadBytes((IntPtr)Address, sizeof(short)),0);
+        public short ReadShort(int Address) => Convert.ToInt16(ReadBytes((IntPtr)Address, sizeof(short)));
 
         /// <summary>
-        /// Конвертирует прочитанные байты в Int32
+        /// Convert Read Byte in Int32(DWORD)
         /// </summary>
-        /// <param name="Address">Адрес функции</param>
+        /// <param name="Address">Address function</param>
         /// <returns></returns>
-        public int ReadInteger32(int Address) => BitConverter.ToInt32(ReadBytes((IntPtr)Address, sizeof(int)),0);
+        public int ReadInteger32(int Address) => Convert.ToInt32(ReadBytes((IntPtr)Address, sizeof(int)));
 
         /// <summary>
-        /// Конвертирует прочитанные байты в DWORD
+        /// Convert Read Byte in Int64
         /// </summary>
-        /// <param name="Address">Адрес функции</param>
+        /// <param name="Address">Address function</param>
         /// <returns></returns>
-        public DWORD ReadDWORD(int Address) => VariableConverter.ToDWORD(ReadBytes((IntPtr)Address,(uint)Marshal.SizeOf(typeof(DWORD))));
+        public long ReadLong(int Address) => Convert.ToInt64(ReadBytes((IntPtr)Address, sizeof(long)));
 
         /// <summary>
-        /// Конвертирует прочитанные байты в Int64
+        /// Convert Read Byte in SByte
         /// </summary>
-        /// <param name="Address">Адрес функции</param>
+        /// <param name="Address">Address function</param>
         /// <returns></returns>
-        public long ReadLong(int Address) => BitConverter.ToInt64(ReadBytes((IntPtr)Address, sizeof(long)),0);
+        public sbyte ReadSByte(int Address) => Convert.ToSByte(ReadBytes((IntPtr)Address, sizeof(sbyte)));
 
         /// <summary>
-        /// Конвертирует прочитанные байты в UInt32
+        /// Convert Read Byte in UInt32
         /// </summary>
-        /// <param name="Address">Адрес функции</param>
+        /// <param name="Address">Address function</param>
         /// <returns></returns>
-        public uint ReadUint(int Address) => BitConverter.ToUInt32(ReadBytes((IntPtr)Address, sizeof(uint)),0);
+        public uint ReadUint(int Address) => Convert.ToUInt32(ReadBytes((IntPtr)Address, sizeof(uint)));
 
         /// <summary>
-        /// Конвертирует прочитанные байты в UInt16
+        /// Convert Read Byte in UInt16
         /// </summary>
-        /// <param name="Address">Адрес функции</param>
+        /// <param name="Address">Address function</param>
         /// <returns></returns>
-        public ushort ReadUShort(int Address) => BitConverter.ToUInt16(ReadBytes((IntPtr)Address, sizeof(ushort)),0);
+        public ushort ReadUShort(int Address) => Convert.ToUInt16(ReadBytes((IntPtr)Address, sizeof(ushort)));
 
         /// <summary>
-        /// Конвертирует прочитанные байты в UInt64
+        /// Convert Read Byte in UInt64
         /// </summary>
-        /// <param name="Address">Адрес функции</param>
+        /// <param name="Address">Address function</param>
         /// <returns></returns>
-        public ulong ReadULong(int Address) => BitConverter.ToUInt64(ReadBytes((IntPtr)Address, sizeof(ulong)),0);
+        public ulong ReadULong(int Address) => Convert.ToUInt64(ReadBytes((IntPtr)Address, sizeof(ulong)));
         #endregion
 
         #region Write
         /// <summary>
-        /// Записывает конвертированное число
+        /// Write Type in Function(Address)
         /// </summary>
-        /// <param name="Address">Адресс функции</param>
-        /// <param name="Value">Значение</param>
+        /// <param name="Address">Address function</param>
         /// <returns></returns>
-        public bool WriteInteger(int Address, int Value) => WriteBytes((IntPtr)Address, BitConverter.GetBytes(Value));
-
-        /// <summary>
-        /// Записывает конвертированное число
-        /// </summary>
-        /// <param name="Address">Адресс функции</param>
-        /// <param name="Value">Значение</param>
-        /// <returns></returns>
-        public bool WriteDWORD(int Address, DWORD Value) => WriteBytes((IntPtr)Address, BitConverter.GetBytes(Value));
-
-        /// <summary>
-        /// Записывает конвертированное число
-        /// </summary>
-        /// <param name="Address">Адресс функции</param>
-        /// <param name="Value">Значение</param>
-        /// <returns></returns>
-        public bool WriteShort(int Address, Int16 Value) => WriteBytes((IntPtr)Address, BitConverter.GetBytes(Value));
+        public bool WriteTypeEnum<T>(int Address,T Value) => WriteBytes((IntPtr)Address,Encoding.UTF8.GetBytes(Value.ToString()));
         #endregion
     }
 }
