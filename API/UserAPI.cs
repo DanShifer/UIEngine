@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
+using UIEngine.Helper.Define.Variable;
 using UIEngine.Helper.Enum;
 
 namespace UIEngine.API
@@ -10,16 +10,16 @@ namespace UIEngine.API
         /// <summary>
         /// Cинтезирует движение мыши и щелчки кнопок.
         /// </summary>
-        /// <param name="dwFlags"></param>
-        /// <param name="dx"></param>
-        /// <param name="dy"></param>
+        /// <param name="dwFlags">Событие мыши</param>
+        /// <param name="dx">Координата X</param>
+        /// <param name="dy">Координата Y</param>
         /// <param name="dwData"></param>
         /// <param name="dwExtraInfo"></param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "4")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("user32.dll")]
-        public static extern void mouse_event(MouseEvent dwFlags, int dx, int dy, uint dwData,int dwExtraInfo);
+        public static extern void mouse_event(MouseEvent dwFlags, int dx, int dy, DWORD dwData,DWORD dwExtraInfo);
 
         /// <summary>
         /// Проверка нажатой клавиши
@@ -30,7 +30,7 @@ namespace UIEngine.API
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "return")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("user32.dll")]
-        public static extern bool GetAsyncKeyState(Keys vKey);
+        public static extern bool GetAsyncKeyState(KeysCode vKey);
 
         /// <summary>
         /// ID Активного окна
