@@ -3,7 +3,7 @@
     /// <summary>
     /// Коды событий мыши
     /// </summary>
-    public enum MouseEvent:uint
+    public enum MouseEvent : uint
     {
         MOUSEEVENTF_ABSOLUTE = 0x8000,
         MOUSEEVENTF_LEFTDOWN = 0x0002,

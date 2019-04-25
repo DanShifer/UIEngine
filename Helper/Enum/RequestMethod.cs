@@ -3,9 +3,9 @@
     /// <summary>
     /// Тип запроса
     /// </summary>
-    public enum RequestMethod
+    public enum RequestMethod : byte
     {
-        GET=1,
+        GET = 1,
         POST
     };
 }
