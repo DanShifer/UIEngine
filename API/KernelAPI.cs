@@ -18,7 +18,7 @@ namespace UIEngine.API
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("kernel32.dll")]
-        public static extern IntPtr OpenProcess(ProcessAccess dwDesiredAccess, bool bInheritHandle, DWORD dwProcessId);
+        public static extern IntPtr OpenProcess(ProcessAccess dwDesiredAccess, BOOLEAN bInheritHandle, DWORD dwProcessId);
 
         /// <summary>
         /// Закрытие хандла процесса
