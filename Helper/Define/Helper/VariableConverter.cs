@@ -21,5 +21,19 @@ namespace UIEngine.Helper.Define.Helper
         /// <param name="Buffer">Массив байтов</param>
         /// <returns></returns>
         public static BOOLEAN ToBOOLEAN(byte[] Buffer) => new BOOLEAN(BitConverter.ToBoolean(Buffer, 0));
+
+        /// <summary>
+        /// Конвертирует значение DWORD в массив байтов
+        /// </summary>
+        /// <param name="Value">Значение</param>
+        /// <returns></returns>
+        public static byte[] ToBytes(DWORD Value) => BitConverter.GetBytes(Value);
+
+        /// <summary>
+        /// Конвертирует значение BOOLEAN в массив байтов
+        /// </summary>
+        /// <param name="Value">Значение</param>
+        /// <returns></returns>
+        public static byte[] ToBytes(BOOLEAN Value) => BitConverter.GetBytes(Value);
     }
 }
