@@ -7,13 +7,15 @@ namespace UIEngine.Helper.Define.Variable
     /// </summary>
     public struct BOOLEAN
     {
-        private bool Value;
+        private Boolean Value;
 
-        public BOOLEAN(bool Value = false) => this.Value = Value;
+        public BOOLEAN(Boolean Value = false) => this.Value = Value;
 
-        public BOOLEAN(int Value = 0) => this.Value = Convert.ToBoolean(Value);
+        public BOOLEAN(byte Value = 0) => this.Value = Convert.ToBoolean(Value);
 
         public static implicit operator BOOLEAN(int Value) => Value > 0 ? new BOOLEAN(true) : new BOOLEAN(false);
+
+        public static implicit operator BOOLEAN(Boolean Value) => new BOOLEAN(Value);
 
         public static implicit operator bool(BOOLEAN BOOLEAN) => BOOLEAN.Value;
     }
