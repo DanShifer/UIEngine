@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using UIEngine.API;
 using UIEngine.Helper.Define.Variable;
@@ -28,7 +27,7 @@ namespace UIEngine.Memory.Helper
         /// <summary>
         /// Коллекция адресов модулей
         /// </summary>
-        protected Dictionary<string, int> Modules = null;
+        protected Dictionary<string, HANDLE> Modules = null;
         #endregion
 
         /// <summary>
@@ -48,7 +47,7 @@ namespace UIEngine.Memory.Helper
         /// </summary>
         /// <param name="ProcessName">Имя процесса</param>
         /// <param name="Modules">Колекция модулей</param>
-        public HMemory(string ProcessName, out Dictionary<string, int> Modules, ProcessAccess ProcessAccess)
+        public HMemory(string ProcessName, out Dictionary<string, HANDLE> Modules, ProcessAccess ProcessAccess)
         {
             this.ProcessName = ProcessName;
             this.ProcessAccess = ProcessAccess;
@@ -59,11 +58,6 @@ namespace UIEngine.Memory.Helper
         }
 
         #region Process
-        /// <summary>
-        /// Является ли процесс запущенным
-        /// </summary>
-        public bool IsActiveProcess => Process.GetProcessesByName(ProcessName).Length > 0 ? true : false;
-
         /// <summary>
         /// Получение процесса
         /// </summary>
@@ -77,22 +71,32 @@ namespace UIEngine.Memory.Helper
         /// <param name="ProcessName">Имя  процесса</param>
         /// <param name="Index">Индекс ресурса процесса</param>
         /// <returns></returns>
-        public static Process GetProcess(string ProcessName,int Index = 0) => Process.GetProcessesByName(ProcessName)[Index];
+        public static Process GetProcess(string ProcessName, int Index = 0) => Process.GetProcessesByName(ProcessName)[Index];
+
+        /// <summary>
+        /// Является ли процесс запущенным
+        /// </summary>
+        public BOOLEAN IsProcessActive() => Process.GetProcessesByName(ProcessName).Length > 0 ? true : false;
+
+        /// <summary>
+        /// Является ли процесс запущенным
+        /// </summary>
+        public static BOOLEAN IsProcessActive(string ProcessName) => Process.GetProcessesByName(ProcessName).Length > 0 ? true : false;
 
         /// <summary>
         /// Получение модулей процесса и добавление их в коллекцию
         /// </summary>
         /// <param name="ProcessName">Имя процесса</param>
         /// <returns></returns>
-        public Dictionary<string,int> GetProcessModule()
+        public Dictionary<string, HANDLE> GetProcessModule()
         {
             if (Modules == null)
             {
-                this.Modules = new Dictionary<string, int>();
+                this.Modules = new Dictionary<string, HANDLE>();
 
-                foreach (ProcessModule UIModule in Process.GetProcessesByName(ProcessName)[0].Modules)
+                foreach (ProcessModule UIModule in GetProcess().Modules)
                 {
-                    this.Modules.Add(UIModule.ModuleName, (int)UIModule.BaseAddress);
+                    this.Modules.Add(UIModule.ModuleName, UIModule.BaseAddress);
                 }
 
                 return this.Modules;
@@ -108,17 +112,7 @@ namespace UIEngine.Memory.Helper
         /// </summary>
         /// <param name="Module">Имя модуля</param>
         /// <returns></returns>
-        public int GetProcessModuleAddress(string Module)
-        {
-            if (this.Modules == null)
-            {
-                return GetProcessModule()[Module];
-            }
-            else
-            {
-                return this.Modules[Module];
-            }
-        }
+        public HANDLE GetProcessModuleAddress(string Module) => this.Modules == null ? GetProcessModule()[Module] : this.Modules[Module];
         #endregion
 
         #region Control Memory
@@ -128,9 +122,9 @@ namespace UIEngine.Memory.Helper
         /// <param name="ProcessOffset">Смещение</param>
         /// <param name="ProcessSize">Размер процесса</param>
         /// <returns></returns>
-        protected byte[] ReadBytes(IntPtr ProcessOffset, DWORD ProcessSize)
+        protected byte[] ReadBytes(HANDLE ProcessOffset, DWORD ProcessSize)
         {
-            byte[] LpBuffer = new byte[(int)(IntPtr)ProcessSize];
+            byte[] LpBuffer = new byte[ProcessSize];
             KernelAPI.ReadProcessMemory(ProcessHandle, ProcessOffset, LpBuffer, ProcessSize, 0);
 
             return LpBuffer;
@@ -142,7 +136,7 @@ namespace UIEngine.Memory.Helper
         /// <param name="ProcessOffset">Смещение</param>
         /// <param name="ProcessBytes">Байты процесса</param>
         /// <returns></returns>
-        protected bool WriteBytes(IntPtr ProcessOffset, byte[] ProcessBytes) => KernelAPI.WriteProcessMemory(ProcessHandle, ProcessOffset, ProcessBytes, (DWORD)ProcessBytes.Length, 0);
+        protected bool WriteBytes(HANDLE ProcessOffset, byte[] ProcessBytes) => KernelAPI.WriteProcessMemory(ProcessHandle, ProcessOffset, ProcessBytes, ProcessBytes.Length, 0);
         #endregion
     }
 }

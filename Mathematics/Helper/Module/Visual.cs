@@ -1,11 +1,12 @@
 ﻿using UIEngine.Mathematics.Vector;
 using System.Windows.Forms;
+using UIEngine.Helper.Define.Variable;
 
 namespace UIEngine.Mathematics.Helper.Module
 {
     public class Visual
     {
-        public static bool WorldToScreen(Vector3 from, Vector3 to,Vector3 Position, Form Overlay, float[] ViewMatrix)
+        public static BOOLEAN WorldToScreen(Vector3 from, Vector3 to, Vector3 Position, Form Overlay, float[] ViewMatrix)
         {
             to.X = ViewMatrix[0] * from.X + ViewMatrix[1] * from.Y + ViewMatrix[2] * from.Z + ViewMatrix[3];
             to.Y = ViewMatrix[4] * from.X + ViewMatrix[5] * from.Y + ViewMatrix[6] * from.Z + ViewMatrix[7];

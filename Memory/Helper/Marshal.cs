@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using UIEngine.Helper.Define.Variable;
 
 namespace UIEngine.Memory.Helper
 {
@@ -8,7 +9,7 @@ namespace UIEngine.Memory.Helper
     /// <typeparam name="T">Тип</typeparam>
     internal static class Marshal<T>
     {
-        public static readonly int Size;
+        public static readonly DWORD Size;
 
         static Marshal()
         {

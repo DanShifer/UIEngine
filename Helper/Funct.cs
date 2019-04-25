@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using UIEngine.API;
+using UIEngine.Helper.Define.Variable;
 using UIEngine.Memory.Helper;
 
 namespace UIEngine.Helper
@@ -13,7 +14,7 @@ namespace UIEngine.Helper
         /// </summary>
         /// <param name="ProcessName">Имя процесса</param>
         /// <returns></returns>
-        public static bool IsActiveWindow(string ProcessName) => HMemory.GetProcess(ProcessName).MainWindowHandle == UserAPI.GetForegroundWindow() ? true : false;
+        public static BOOLEAN IsActiveWindow(string ProcessName) => HMemory.GetProcess(ProcessName).MainWindowHandle == UserAPI.GetForegroundWindow() ? true : false;
 
         /// <summary>
         /// Чтение смещений в файле

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -16,16 +15,16 @@ namespace UIEngine.Helper.Site
         private readonly RequestMethod RequestMethod;
 
         private HttpWebRequest HttpWebRequest;
-        private HttpWebResponse HttpWebResponse;
+        private WebResponse HttpWebResponse;
         private RequestHeader RequestHeader;
 
-        private static Dictionary<string, string> ParamsValue = new Dictionary<string, string>();
+        private Dictionary<string, string> ParamsValue = new Dictionary<string, string>();
         #endregion
 
         public Request(string Address, RequestMethod RequestMethod = RequestMethod.POST, RequestHeader RequestHeader = null)
         {
             this.Address = Address;
-        
+
             this.RequestMethod = RequestMethod;
             this.RequestHeader = RequestHeader;
         }
@@ -59,52 +58,85 @@ namespace UIEngine.Helper.Site
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Не ликвидировать объекты несколько раз")]
         public string GetRespone()
         {
-            try
+            string ReadResponse = null;
+
+            this.HttpWebRequest = this.RequestMethod == RequestMethod.GET ? (HttpWebRequest)WebRequest.Create(this.Address + Encoding.UTF8.GetString(GetParam())) : (HttpWebRequest)WebRequest.Create(this.Address);
+
+            this.HttpWebRequest.Method = this.RequestMethod == RequestMethod.GET ? "GET" : "POST";
+
+            if (RequestHeader != null)
             {
-                string ReadResponse = null;
-
-                this.HttpWebRequest = this.RequestMethod == RequestMethod.GET ? (HttpWebRequest)WebRequest.Create(this.Address + Encoding.UTF8.GetString(GetParam())) : (HttpWebRequest)WebRequest.Create(this.Address);
-
-                this.HttpWebRequest.Method = this.RequestMethod == RequestMethod.GET ? "GET" : "POST";
-
-                if (RequestHeader != null)
+                foreach (var Headers in RequestHeader?.RequestValue)
                 {
-                    foreach (var Headers in RequestHeader?.RequestValue)
-                    {
-                        this.HttpWebRequest.Headers.Add(Headers.Key, Headers.Value);
-                    }
+                    this.HttpWebRequest.Headers.Add(Headers.Key, Headers.Value);
                 }
-
-                this.HttpWebRequest.ContentType = ContentType;
-                this.HttpWebRequest.Accept = Accept;
-                this.HttpWebRequest.UserAgent = UserAgent;
-
-                if (this.RequestMethod == RequestMethod.POST)
-                {
-                    this.HttpWebRequest.ContentLength = GetParam().Length;
-
-                    using (Stream StreamRequest = this.HttpWebRequest.GetRequestStream())
-                    {
-                        StreamRequest.Write(GetParam(), 0, GetParam().Length);
-                    }
-                }
-
-                this.HttpWebResponse = (HttpWebResponse)this.HttpWebRequest.GetResponse();
-            
-                using (StreamReader StreamReader = new StreamReader(HttpWebResponse.GetResponseStream()))
-                {
-                    ReadResponse += StreamReader.ReadToEnd();
-                }
-            
-                return ReadResponse;
             }
-            catch (Exception EX)
+
+            this.HttpWebRequest.ContentType = ContentType ?? "application/x-www-form-urlencoded";
+            this.HttpWebRequest.Accept = Accept;
+            this.HttpWebRequest.UserAgent = UserAgent ?? "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 YaBrowser/19.3.1.887 Yowser/2.5 Safari/537.36";
+
+            if (this.RequestMethod == RequestMethod.POST)
             {
-                return EX.Message;
+                this.HttpWebRequest.ContentLength = GetParam().Length;
+
+                using (Stream StreamRequest = this.HttpWebRequest.GetRequestStream())
+                {
+                    StreamRequest.Write(GetParam(), 0, GetParam().Length);
+                }
             }
+
+            this.HttpWebResponse = (HttpWebResponse)this.HttpWebRequest.GetResponse();
+
+            using (StreamReader StreamReader = new StreamReader(HttpWebResponse.GetResponseStream()))
+            {
+                ReadResponse += StreamReader.ReadToEnd();
+            }
+
+            ParamsValue.Clear();
+
+            return ReadResponse;
         }
 
-        public async Task<string> GetResponeAsync() => await Task.Run(() => GetRespone());
+        public async Task<string> GetResponeAsync()
+        {
+            string ReadResponse = null;
+
+            this.HttpWebRequest = this.RequestMethod == RequestMethod.GET ? (HttpWebRequest)WebRequest.Create(this.Address + Encoding.UTF8.GetString(GetParam())) : (HttpWebRequest)WebRequest.Create(this.Address);
+
+            this.HttpWebRequest.Method = this.RequestMethod == RequestMethod.GET ? "GET" : "POST";
+
+            if (RequestHeader != null)
+            {
+                foreach (var Headers in RequestHeader?.RequestValue)
+                {
+                    this.HttpWebRequest.Headers.Add(Headers.Key, Headers.Value);
+                }
+            }
+
+            this.HttpWebRequest.ContentType = ContentType ?? "application/x-www-form-urlencoded";
+            this.HttpWebRequest.Accept = Accept;
+            this.HttpWebRequest.UserAgent = UserAgent ?? "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 YaBrowser/19.3.1.887 Yowser/2.5 Safari/537.36";
+
+            if (this.RequestMethod == RequestMethod.POST)
+            {
+                this.HttpWebRequest.ContentLength = GetParam().Length;
+
+                using (Stream StreamRequest = await this.HttpWebRequest.GetRequestStreamAsync())
+                {
+                    StreamRequest.Write(GetParam(), 0, GetParam().Length);
+                }
+            }
+
+            this.HttpWebResponse = await this.HttpWebRequest.GetResponseAsync();
+
+            using (StreamReader StreamReader = new StreamReader(HttpWebResponse.GetResponseStream()))
+            {
+                ReadResponse += await StreamReader.ReadToEndAsync();
+            }
+
+            return ReadResponse;
+        }
         #endregion
 
         #region Helper Methods

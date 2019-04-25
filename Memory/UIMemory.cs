@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using UIEngine.API;
@@ -24,7 +23,7 @@ namespace UIEngine.Memory
         /// </summary>
         /// <param name="ProcessName">Имя процесса</param>
         /// <param name="Modules">Колекция модулей</param>
-        public UIMemory(string ProcessName, out Dictionary<string, int> Modules, ProcessAccess ProcessAccess) : base(ProcessName, out Modules, ProcessAccess) { }
+        public UIMemory(string ProcessName, out Dictionary<string, HANDLE> Modules, ProcessAccess ProcessAccess) : base(ProcessName, out Modules, ProcessAccess) { }
 
         /// <summary>
         /// Дескриптор, закрывающий Хандл
@@ -39,17 +38,17 @@ namespace UIEngine.Memory
         /// <param name="Size">Размер строки (Если тип является string)</param>
         /// <param name="Module">Имя модуля, с которого читается адрес</param>
         /// <returns></returns>
-        public unsafe T Read<T>(int Address, uint Size = 0, string Module = null)
+        public unsafe T Read<T>(HANDLE Address, DWORD Size, string Module = null)
         {
             if (typeof(T) == typeof(string))
             {
-                return Module == null ? (dynamic)Encoding.UTF8.GetString(ReadBytes((IntPtr)Address, Size)) : (dynamic)Encoding.UTF8.GetString(ReadBytes((IntPtr)(Modules[Module] + Address), Size));
+                return Module == null ? (dynamic)Encoding.UTF8.GetString(ReadBytes(Address, Size)) : (dynamic)Encoding.UTF8.GetString(ReadBytes(Modules[Module] + Address, Size));
             }
             else
             {
-                fixed (byte* Byte = Module == null ? ReadBytes((IntPtr)Address, (uint)Marshal<T>.Size) : ReadBytes((IntPtr)(Modules[Module] + Address), (uint)Marshal<T>.Size))
+                fixed (byte* Byte = Module == null ? ReadBytes(Address, Marshal<T>.Size) : ReadBytes(Modules[Module] + Address, Marshal<T>.Size))
                 {
-                    return Marshal.PtrToStructure<T>((IntPtr)Byte);
+                    return Marshal.PtrToStructure<T>((HANDLE)Byte);
                 }
             }
         }
@@ -60,7 +59,7 @@ namespace UIEngine.Memory
         /// <typeparam name="T">Тип значения (необязательно)</typeparam>
         /// <param name="Address">Адрес для записи</param>
         /// <param name="Value">Само значение</param>
-        public unsafe bool Write<T>(int Address, T Value, string Module = null)
+        public unsafe bool Write<T>(HANDLE Address, T Value, string Module = null)
         {
             byte[] Buffer;
 
@@ -74,11 +73,11 @@ namespace UIEngine.Memory
 
                 fixed (byte* Byte = Buffer)
                 {
-                    Marshal.StructureToPtr(Value, (IntPtr)Byte, true);
+                    Marshal.StructureToPtr(Value, (HANDLE)Byte, true);
                 }
             }
 
-           return WriteBytes((IntPtr)(Module == null ? Address : Modules[Module] + Address), Buffer);
+            return WriteBytes((Module == null ? Address : Modules[Module] + Address), Buffer);
         }
     }
 }

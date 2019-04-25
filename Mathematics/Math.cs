@@ -24,7 +24,7 @@
             }
 
             return Number;
-        }           
+        }
 
         public static long Factorial(this long Number) => Number == 0 ? 1 : Number * Factorial(Number - 1);
 

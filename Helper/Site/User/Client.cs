@@ -20,7 +20,7 @@ namespace UIEngine.Helper.Site.User
             {
                 Hash += $"{Byte:x2}";
             }
-        
+
             return Hash.ToUpper();
         }
 
@@ -43,22 +43,18 @@ namespace UIEngine.Helper.Site.User
         public static string GetComputerID()
         {
             StringBuilder ComputerID = new StringBuilder();
-            ManagementObjectSearcher Searcher;
 
-            Searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_Processor");
-            foreach (ManagementObject queryObj in Searcher.Get())
+            foreach (ManagementObject queryObj in new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_Processor").Get())
             {
                 ComputerID.Append(queryObj["ProcessorId"]);
             }
 
-            Searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_VideoController");
-            foreach (ManagementObject queryObj in Searcher.Get())
+            foreach (ManagementObject queryObj in new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_VideoController").Get())
             {
                 ComputerID.Append(queryObj["AdapterRAM"]);
             }
 
-            Searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_DiskDrive");
-            foreach (ManagementObject queryObj in Searcher.Get())
+            foreach (ManagementObject queryObj in new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_DiskDrive").Get())
             {
                 ComputerID.Append(queryObj["Size"]);
             }
