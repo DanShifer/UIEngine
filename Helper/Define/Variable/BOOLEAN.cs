@@ -13,10 +13,14 @@ namespace UIEngine.Helper.Define.Variable
 
         public BOOLEAN(byte Value = 0) => this.Value = Convert.ToBoolean(Value);
 
+        public BOOLEAN(string Value = "False") => this.Value = Convert.ToBoolean(Value);
+
         public static implicit operator BOOLEAN(int Value) => Value > 0 ? new BOOLEAN(true) : new BOOLEAN(false);
 
         public static implicit operator BOOLEAN(Boolean Value) => new BOOLEAN(Value);
 
         public static implicit operator bool(BOOLEAN BOOLEAN) => BOOLEAN.Value;
+
+        public override string ToString() => Value.ToString();
     }
 }

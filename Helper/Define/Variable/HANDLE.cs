@@ -26,5 +26,7 @@ namespace UIEngine.Helper.Define.Variable
         public static HANDLE operator +(HANDLE HANDLE, int Value) => HANDLE.Value + Value;
 
         public static HANDLE operator -(HANDLE HANDLE, int Value) => HANDLE.Value - Value;
+
+        public override string ToString() => Value.ToString();
     }
 }

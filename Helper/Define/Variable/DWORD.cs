@@ -25,6 +25,10 @@ namespace UIEngine.Helper.Define.Variable
 
         public static explicit operator short(DWORD DWORD) => (short)DWORD.Value;
 
+        public static explicit operator byte(DWORD DWORD) => (byte)DWORD.Value;
+
+        public static explicit operator bool(DWORD DWORD) => DWORD.Value != 0 ? true : false;
+
         public static DWORD operator +(DWORD DWORD, UInt32 Value) => DWORD.Value + Value;
 
         public static DWORD operator -(DWORD DWORD, UInt32 Value) => DWORD.Value - Value;
@@ -37,8 +41,10 @@ namespace UIEngine.Helper.Define.Variable
 
         public static bool operator !=(DWORD DWORD, UInt32 Value) => DWORD.Value != Value;
 
-        public override bool Equals(Object Object) => Object is DWORD dWORD && Value == dWORD.Value;
+        public override bool Equals(Object Object) => Object is DWORD DWORD && Value == DWORD.Value;
 
         public override int GetHashCode() => -1937169414 + Value.GetHashCode();
+
+        public override string ToString() => Value.ToString();
     }
 }
