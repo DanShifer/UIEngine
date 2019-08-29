@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using UIEngine.Helper.Define.Variable;
 
 namespace UIEngine.Mathematics.Vector
 {
@@ -235,13 +236,11 @@ namespace UIEngine.Mathematics.Vector
 
         #region Public Static Methods
         /// <summary>
-        /// Returns the dot product of two vectors.
+        /// Длина вектора
         /// </summary>
-        /// <param name="vector1">The first vector.</param>
-        /// <param name="vector2">The second vector.</param>
-        /// <returns>The dot product.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float Dot(Vector3 vector1, Vector3 vector2) => vector1.X * vector2.X + vector1.Y * vector2.Y + vector1.Z * vector2.Z;
+        /// <param name="Player"></param>
+        /// <returns></returns>
+        public static double VectorLength(Vector3 Player) => System.Math.Sqrt((Player.X * Player.X) + (Player.Y * Player.Y) + (Player.Z * Player.Z));
 
         /// <summary>
         /// Returns a vector whose elements are the minimum of each of the pairs of elements in the two source vectors.
@@ -283,25 +282,21 @@ namespace UIEngine.Mathematics.Vector
         /// <param name="value2">The second point.</param>
         /// <returns>The distance.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float Distance(Vector3 value1, Vector3 value2)
-        {
-            Vector3 difference = value1 - value2;
-            float ls = Dot(difference, difference);
-            return (float)System.Math.Sqrt(ls);
-        }
+        public static float Distance(Vector3 Player, Vector3 Enemy) => (float)System.Math.Sqrt(System.Math.Pow((Enemy.X - Player.X), 2) + Math.Pow((Enemy.Y - Player.Y), 2) + Math.Pow((Enemy.Z - Player.Z), 2));
 
         /// <summary>
-        /// Returns the Euclidean distance squared between the two given points.
+        /// Равно ли значение вектора нулю
         /// </summary>
-        /// <param name="value1">The first point.</param>
-        /// <param name="value2">The second point.</param>
-        /// <returns>The distance squared.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float DistanceSquared(Vector3 value1, Vector3 value2)
-        {
-            Vector3 difference = value1 - value2;
-            return Dot(difference, difference);
-        }
+        /// <param name="Player"></param>
+        /// <returns></returns>
+        public static BOOLEAN IsNullVector(Vector2 Player) => Player == new Vector2() ? true : false;
+
+        /// <summary>
+        /// Равно ли значение вектора нулю
+        /// </summary>
+        /// <param name="Player"></param>
+        /// <returns></returns>
+        public static BOOLEAN IsNullVector(Vector3 Player) => Player == new Vector3() ? true : false;
         #endregion Public Static Methods      
     }
 }

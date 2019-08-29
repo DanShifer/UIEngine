@@ -2,9 +2,9 @@
 {
     public static class Math
     {
-        public static double Pow(this double One, dynamic Two)
+        public static double Pow(this double One, double Two)
         {
-            dynamic Number = One;
+            double Number = One;
 
             for (int UINT = 1; UINT < Two; UINT++)
             {

@@ -1,5 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 
+using UIEngine.Helper.Define.Variable;
+
 namespace UIEngine.Mathematics.Vector
 {
     public struct Vector2
@@ -291,6 +293,13 @@ namespace UIEngine.Mathematics.Vector
 
             return dx * dx + dy * dy;
         }
+
+        /// <summary>
+        /// Равно ли значение вектора нулю
+        /// </summary>
+        /// <param name="Player"></param>
+        /// <returns></returns>
+        public static BOOLEAN IsNullVector(Vector2 Player) => Player == new Vector2(0,0) ? true : false;
         #endregion Public Static Methods
     }
 }
