@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using UIEngine.Helper.Define.Variable;
 using UIEngine.Helper.Enum;
 
@@ -29,7 +30,7 @@ namespace UIEngine.API
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "return")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("user32.dll")]
-        public static extern BOOLEAN GetAsyncKeyState(KeysCode vKey);
+        public static extern bool GetAsyncKeyState(KeysCode vKey);
 
         /// <summary>
         /// ID Активного окна
@@ -38,6 +39,6 @@ namespace UIEngine.API
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")]
         [DllImport("user32.dll")]
-        public static extern HANDLE GetForegroundWindow();
+        public static extern IntPtr GetForegroundWindow();
     }
 }
