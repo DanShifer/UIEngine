@@ -1,4 +1,5 @@
 ﻿using System;
+
 using UIEngine.Helper.Define.Variable;
 
 namespace UIEngine.Helper.Define.Helper
@@ -13,14 +14,14 @@ namespace UIEngine.Helper.Define.Helper
         /// </summary>
         /// <param name="Buffer">Массив байтов</param>
         /// <returns></returns>
-        public static DWORD ToDWORD(byte[] Buffer) => new DWORD(BitConverter.ToUInt32(Buffer, 0));
+        public static DWORD ByteToDWORD(byte[] Buffer) => new DWORD(BitConverter.ToUInt32(Buffer, 0));
 
         /// <summary>
         /// Конвертирует массив байтов в тип BOOLEAN
         /// </summary>
         /// <param name="Buffer">Массив байтов</param>
         /// <returns></returns>
-        public static BOOLEAN ToBOOLEAN(byte[] Buffer) => new BOOLEAN(BitConverter.ToBoolean(Buffer, 0));
+        public static BOOLEAN ByteToBOOLEAN(byte[] Buffer) => new BOOLEAN(BitConverter.ToBoolean(Buffer, 0));
 
         /// <summary>
         /// Конвертирует значение DWORD в массив байтов
