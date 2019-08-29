@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+
 using UIEngine.Helper.Enum;
 using UIEngine.Helper.Site.Helper;
 
@@ -60,9 +61,34 @@ namespace UIEngine.Helper.Site
         {
             string ReadResponse = null;
 
-            this.HttpWebRequest = this.RequestMethod == RequestMethod.GET ? (HttpWebRequest)WebRequest.Create(this.Address + Encoding.UTF8.GetString(GetParam())) : (HttpWebRequest)WebRequest.Create(this.Address);
+            HttpWebResponse = GetResponse();
 
-            this.HttpWebRequest.Method = this.RequestMethod == RequestMethod.GET ? "GET" : "POST";
+            using (StreamReader StreamReader = new StreamReader(HttpWebResponse.GetResponseStream()))
+            {
+                ReadResponse += StreamReader.ReadToEnd();
+            }
+
+            return ReadResponse;
+        }
+
+        public async Task<string> GetResponeAsync()
+        {
+            string ReadResponse = null;
+
+            HttpWebResponse = await GetResponseAsync();
+
+            using (StreamReader StreamReader = new StreamReader(HttpWebResponse.GetResponseStream()))
+            {
+                ReadResponse += await StreamReader.ReadToEndAsync();
+            }
+
+            return ReadResponse;
+        }
+
+        public HttpWebResponse GetResponse()
+        {
+            HttpWebRequest = RequestMethod == RequestMethod.GET ? (HttpWebRequest)WebRequest.Create(Address + Encoding.UTF8.GetString(GetParam())) : (HttpWebRequest)WebRequest.Create(Address);
+            HttpWebRequest.Method = RequestMethod == RequestMethod.GET ? "GET" : "POST";
 
             if (RequestHeader != null)
             {
@@ -72,11 +98,11 @@ namespace UIEngine.Helper.Site
                 }
             }
 
-            this.HttpWebRequest.ContentType = ContentType ?? "application/x-www-form-urlencoded";
-            this.HttpWebRequest.Accept = Accept;
-            this.HttpWebRequest.UserAgent = UserAgent ?? "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 YaBrowser/19.3.1.887 Yowser/2.5 Safari/537.36";
+            HttpWebRequest.ContentType = ContentType ?? "application/x-www-form-urlencoded";
+            HttpWebRequest.Accept = Accept ?? "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
+            HttpWebRequest.UserAgent = UserAgent ?? "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 YaBrowser/19.3.1.887 Yowser/2.5 Safari/537.36";
 
-            if (this.RequestMethod == RequestMethod.POST)
+            if (RequestMethod == RequestMethod.POST)
             {
                 this.HttpWebRequest.ContentLength = GetParam().Length;
 
@@ -86,25 +112,16 @@ namespace UIEngine.Helper.Site
                 }
             }
 
-            this.HttpWebResponse = (HttpWebResponse)this.HttpWebRequest.GetResponse();
-
-            using (StreamReader StreamReader = new StreamReader(HttpWebResponse.GetResponseStream()))
-            {
-                ReadResponse += StreamReader.ReadToEnd();
-            }
-
             ParamsValue.Clear();
 
-            return ReadResponse;
+            return (HttpWebResponse)HttpWebRequest.GetResponse();
         }
 
-        public async Task<string> GetResponeAsync()
+        public async Task<WebResponse> GetResponseAsync()
         {
-            string ReadResponse = null;
+            HttpWebRequest = RequestMethod == RequestMethod.GET ? (HttpWebRequest)WebRequest.Create(Address + Encoding.UTF8.GetString(GetParam())) : (HttpWebRequest)WebRequest.Create(Address);
 
-            this.HttpWebRequest = this.RequestMethod == RequestMethod.GET ? (HttpWebRequest)WebRequest.Create(this.Address + Encoding.UTF8.GetString(GetParam())) : (HttpWebRequest)WebRequest.Create(this.Address);
-
-            this.HttpWebRequest.Method = this.RequestMethod == RequestMethod.GET ? "GET" : "POST";
+            HttpWebRequest.Method = RequestMethod == RequestMethod.GET ? "GET" : "POST";
 
             if (RequestHeader != null)
             {
@@ -114,11 +131,11 @@ namespace UIEngine.Helper.Site
                 }
             }
 
-            this.HttpWebRequest.ContentType = ContentType ?? "application/x-www-form-urlencoded";
-            this.HttpWebRequest.Accept = Accept;
-            this.HttpWebRequest.UserAgent = UserAgent ?? "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 YaBrowser/19.3.1.887 Yowser/2.5 Safari/537.36";
+            HttpWebRequest.ContentType = ContentType ?? "application/x-www-form-urlencoded";
+            HttpWebRequest.Accept = Accept ?? "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
+            HttpWebRequest.UserAgent = UserAgent ?? "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 YaBrowser/19.3.1.887 Yowser/2.5 Safari/537.36";
 
-            if (this.RequestMethod == RequestMethod.POST)
+            if (RequestMethod == RequestMethod.POST)
             {
                 this.HttpWebRequest.ContentLength = GetParam().Length;
 
@@ -128,14 +145,7 @@ namespace UIEngine.Helper.Site
                 }
             }
 
-            this.HttpWebResponse = await this.HttpWebRequest.GetResponseAsync();
-
-            using (StreamReader StreamReader = new StreamReader(HttpWebResponse.GetResponseStream()))
-            {
-                ReadResponse += await StreamReader.ReadToEndAsync();
-            }
-
-            return ReadResponse;
+            return await HttpWebRequest.GetResponseAsync();
         }
         #endregion
 
@@ -151,7 +161,7 @@ namespace UIEngine.Helper.Site
                     Params += Param.Key + "=" + Param.Value + "&";
                 }
 
-                return this.RequestMethod == RequestMethod.GET ? Encoding.UTF8.GetBytes(Params.Insert(0, "?").TrimEnd('&')) : Encoding.UTF8.GetBytes(Params.TrimEnd('&'));
+                return RequestMethod == RequestMethod.GET ? Encoding.UTF8.GetBytes(Params.Insert(0, "?").TrimEnd('&')) : Encoding.UTF8.GetBytes(Params.TrimEnd('&'));
             }
             catch
             {
