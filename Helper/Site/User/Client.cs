@@ -1,18 +1,20 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.Management;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace UIEngine.Helper.Site.User
 {
-    public class Client
+    public static class Client
     {
         /// <summary>
         /// Получение MD5
         /// </summary>
         /// <param name="Data">Данные для криптования</param>
         /// <returns></returns>
-        public static string GetMD5(string Data)
+        public static string GetMD5(this string Data)
         {
             string Hash = "";
 
@@ -22,6 +24,27 @@ namespace UIEngine.Helper.Site.User
             }
 
             return Hash.ToUpper();
+        }
+
+        /// <summary>
+        /// Получение MD5 приложения
+        /// </summary>
+        /// <param name="Path">Путь до приложения</param>
+        /// <returns></returns>
+        public static string GetAppMD5(string Path)
+        {
+            using (FileStream FileStream = File.OpenRead(Path))
+            {
+                MD5 MD5 = new MD5CryptoServiceProvider();
+
+                byte[] FileData = new byte[FileStream.Length];
+
+                FileStream.Read(FileData, 0, (int)FileStream.Length);
+
+                byte[] HashSum = MD5.ComputeHash(FileData);
+
+                return BitConverter.ToString(HashSum).Replace('-', '\0');
+            }
         }
 
         /// <summary>
