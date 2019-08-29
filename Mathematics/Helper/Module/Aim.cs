@@ -13,6 +13,22 @@ namespace UIEngine.Mathematics.Helper.Module
         public static float GetFov(Vector3 ViewAngel, Vector3 Dst) => (float)System.Math.Sqrt(Math.Pow(Dst.X - ViewAngel.X, 2) + Math.Pow(Dst.Y - ViewAngel.Y, 2));
 
         /// <summary>
+        /// Метод, вычисляющий расстояние до цели в градусах
+        /// </summary>
+        /// <param name="ViewAngel">Угол обзора локального игрока</param>
+        /// <param name="Dst">Противник</param>
+        /// <returns></returns>
+        public static float GetFov(Vector3 ViewAngel, Vector3 Dst, float Distance) => (float)System.Math.Sqrt(Math.Pow(System.Math.Sin(Math.DegreesTwoRad(ViewAngel.X - Dst.X)) * Distance, 2) + Math.Pow(System.Math.Sin(Math.DegreesTwoRad(ViewAngel.Y - Dst.Y)) * Distance, 2));
+
+        /// <summary>
+        /// Метод, вычисляющий расстояние до цели в градусах(Облегченная версия без циклов)
+        /// </summary>
+        /// <param name="ViewAngel">Угол обзора локального игрока</param>
+        /// <param name="Dst">Противник</param>
+        /// <returns></returns>
+        public static float GetFovLite(Vector3 ViewAngel, Vector3 Dst, float Distance) => (float)System.Math.Sqrt(((System.Math.Sin(Math.DegreesTwoRad(ViewAngel.X - Dst.X)) * Distance) * (System.Math.Sin(Math.DegreesTwoRad(ViewAngel.X - Dst.X)) * Distance)) + ((System.Math.Sin(Math.DegreesTwoRad(ViewAngel.Y - Dst.Y)) * Distance) * (System.Math.Sin(Math.DegreesTwoRad(ViewAngel.Y - Dst.Y)) * Distance)));
+
+        /// <summary>
         /// Захват угла
         /// </summary>
         /// <param name="Angles">Угол</param>
@@ -94,6 +110,6 @@ namespace UIEngine.Mathematics.Helper.Module
         /// <param name="Dst">До</param>
         /// <param name="SmoothAmount">Скорость доводки</param>
         /// <returns></returns>
-        public static Vector3 SmoothAngle(Vector3 Src, Vector3 Dst, float SmoothAmount) => (Src + NormalizeAngle(Dst - Src) / 100 * SmoothAmount).ClampAngle();
+        public static Vector3 SmoothAngle(Vector3 Src, Vector3 Dst, float SmoothAmount) => (Src + NormalizeAngle(Dst - Src) / 100f * SmoothAmount).ClampAngle();
     }
 }

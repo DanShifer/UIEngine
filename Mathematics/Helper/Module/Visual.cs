@@ -1,5 +1,6 @@
-﻿using UIEngine.Mathematics.Vector;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
+
+using UIEngine.Mathematics.Vector;
 using UIEngine.Helper.Define.Variable;
 
 namespace UIEngine.Mathematics.Helper.Module
@@ -32,6 +33,44 @@ namespace UIEngine.Mathematics.Helper.Module
             Position.Y = to.Y = Y;
 
             return true;
+        }
+
+        public static Vector2 WorldToScreen(Vector3 Target, float[] ViewMatrix)
+        {
+            Vector2 WorldToScreenPosition;
+            Vector3 To;
+
+            float W = 0.0f;
+
+            To.X = ViewMatrix[0] * Target.X + ViewMatrix[1] * Target.Y + ViewMatrix[2] * Target.Z + ViewMatrix[3];
+            To.Y = ViewMatrix[4] * Target.X + ViewMatrix[5] * Target.Y + ViewMatrix[6] * Target.Z + ViewMatrix[7];
+
+            W = ViewMatrix[12] * Target.X + ViewMatrix[13] * Target.Y + ViewMatrix[14] * Target.Z + ViewMatrix[15];
+
+            if (W < 0.01f)
+            {
+                return new Vector2(0, 0);
+            }
+
+            To.X *= (1.0f / W);
+            To.Y *= (1.0f / W);
+
+            int Width = Screen.PrimaryScreen.Bounds.Width;
+            int Height = Screen.PrimaryScreen.Bounds.Height;
+
+            float X = Width / 2;
+            float Y = Height / 2;
+
+            X += 0.5f * To.X * Width + 0.5f;
+            Y -= 0.5f * To.Y * Height + 0.5f;
+
+            To.X = X;
+            To.Y = Y;
+
+            WorldToScreenPosition.X = To.X;
+            WorldToScreenPosition.Y = To.Y;
+
+            return WorldToScreenPosition;
         }
     }
 }
