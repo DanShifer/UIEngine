@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+
 using UIEngine.API;
 using UIEngine.Helper.Define.Variable;
 using UIEngine.Helper.Enum;
@@ -15,14 +17,19 @@ namespace UIEngine.Memory.Helper
         private string ProcessName;
 
         /// <summary>
+        /// Класс процесса
+        /// </summary>
+        private Process[] ProcessMemory;
+
+        /// <summary>
         /// Хандл процесса
         /// </summary>
-        protected HANDLE ProcessHandle;
+        protected HANDLE ProcessHandle,ProcessWindowHandle;
 
         /// <summary>
         /// Права в процессе
         /// </summary>
-        private ProcessAccess ProcessAccess;
+        private readonly ProcessAccess ProcessAccess;
 
         /// <summary>
         /// Коллекция адресов модулей
@@ -34,12 +41,8 @@ namespace UIEngine.Memory.Helper
         /// Получение хандла
         /// </summary>
         /// <param name="ProcessName">Имя процесса</param>
-        public HMemory(string ProcessName, ProcessAccess ProcessAccess)
+        public HMemory(string ProcessName, ProcessAccess ProcessAccess):this(ProcessName,out Dictionary<string,HANDLE> Modules,ProcessAccess)
         {
-            this.ProcessName = ProcessName;
-            this.ProcessAccess = ProcessAccess;
-
-            ProcessHandle = KernelAPI.OpenProcess(ProcessAccess, false, (DWORD)Process.GetProcessesByName(ProcessName)[0].Id);
         }
 
         /// <summary>
@@ -52,18 +55,33 @@ namespace UIEngine.Memory.Helper
             this.ProcessName = ProcessName;
             this.ProcessAccess = ProcessAccess;
 
-            ProcessHandle = KernelAPI.OpenProcess(ProcessAccess, false, (DWORD)Process.GetProcessesByName(ProcessName)[0].Id);
+            ProcessMemory = Process.GetProcessesByName(ProcessName);
 
-            Modules = GetProcessModule();
+            if (IsProcessActive(ProcessName))
+            {
+                ProcessHandle = KernelAPI.OpenProcess(ProcessAccess, false, ProcessMemory[0].Id);
+                ProcessWindowHandle = ProcessMemory[0].MainWindowHandle;
+
+                Modules = GetProcessModule(ProcessMemory);
+            }
+            else
+            {
+                throw new Exception("Процесс не запущен!");
+            }
         }
 
         #region Process
+        /// <summary>
+        /// Получения хандл процесса
+        /// </summary>
+        public HANDLE GetProcessHandle => ProcessHandle;
+
         /// <summary>
         /// Получение процесса
         /// </summary>
         /// <param name="Index">Индекс ресурса процесса</param>
         /// <returns></returns>
-        public Process GetProcess(int Index = 0) => Process.GetProcessesByName(ProcessName)[Index];
+        public Process GetProcess(int Index = 0) => ProcessMemory[Index];
 
         /// <summary>
         /// Получение процесса
@@ -76,12 +94,26 @@ namespace UIEngine.Memory.Helper
         /// <summary>
         /// Является ли процесс запущенным
         /// </summary>
-        public BOOLEAN IsProcessActive() => Process.GetProcessesByName(ProcessName).Length > 0 ? true : false;
+        public BOOLEAN IsProcessActive() => ProcessMemory.Length > 0 ? true : false;
 
         /// <summary>
         /// Является ли процесс запущенным
         /// </summary>
         public static BOOLEAN IsProcessActive(string ProcessName) => Process.GetProcessesByName(ProcessName).Length > 0 ? true : false;
+
+        /// <summary>
+        /// Проверка активного окна процесса
+        /// </summary>
+        /// <param name="ProcessName">Имя процесса</param>
+        /// <returns></returns>
+        public BOOLEAN IsProcessActiveWindow() => ProcessWindowHandle == UserAPI.GetForegroundWindow() ? true : false;
+
+        /// <summary>
+        /// Проверка активного окна процесса
+        /// </summary>
+        /// <param name="ProcessName">Имя процесса</param>
+        /// <returns></returns>
+        public static BOOLEAN IsProcessActiveWindow(string ProcessName) => GetProcess(ProcessName).MainWindowHandle == UserAPI.GetForegroundWindow() ? true : false;
 
         /// <summary>
         /// Получение модулей процесса и добавление их в коллекцию
@@ -107,12 +139,50 @@ namespace UIEngine.Memory.Helper
             }
         }
 
+        public Dictionary<string, HANDLE> GetProcessModule(Process Process)
+        {
+            if (Modules == null)
+            {
+                this.Modules = new Dictionary<string, HANDLE>();
+
+                foreach (ProcessModule UIModule in Process.Modules)
+                {
+                    this.Modules.Add(UIModule.ModuleName, UIModule.BaseAddress);
+                }
+
+                return this.Modules;
+            }
+            else
+            {
+                return this.Modules;
+            }
+        }
+
+        public Dictionary<string, HANDLE> GetProcessModule(Process[] Process)
+        {
+            if (Modules == null)
+            {
+                this.Modules = new Dictionary<string, HANDLE>();
+
+                foreach (ProcessModule UIModule in Process[0].Modules)
+                {
+                    this.Modules.Add(UIModule.ModuleName, UIModule.BaseAddress);
+                }
+
+                return this.Modules;
+            }
+            else
+            {
+                return this.Modules;
+            }
+        }
+
         /// <summary>
         /// Получение адреса модуля
         /// </summary>
         /// <param name="Module">Имя модуля</param>
         /// <returns></returns>
-        public HANDLE GetProcessModuleAddress(string Module) => this.Modules == null ? GetProcessModule()[Module] : this.Modules[Module];
+        public HANDLE GetProcessModuleAddress(string Module) => Modules == null ? GetProcessModule()[Module] : Modules[Module];
         #endregion
 
         #region Control Memory
@@ -124,10 +194,11 @@ namespace UIEngine.Memory.Helper
         /// <returns></returns>
         protected byte[] ReadBytes(HANDLE ProcessOffset, DWORD ProcessSize)
         {
-            byte[] LpBuffer = new byte[ProcessSize];
-            KernelAPI.ReadProcessMemory(ProcessHandle, ProcessOffset, LpBuffer, ProcessSize, 0);
+            byte[] Buffer = new byte[ProcessSize];
 
-            return LpBuffer;
+            KernelAPI.ReadProcessMemory(ProcessHandle, ProcessOffset, Buffer, ProcessSize, 0);
+
+            return Buffer;
         }
 
         /// <summary>

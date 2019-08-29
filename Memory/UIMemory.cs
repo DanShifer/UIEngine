@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+
 using UIEngine.API;
 using UIEngine.Helper.Define.Variable;
 using UIEngine.Helper.Enum;
@@ -52,6 +53,16 @@ namespace UIEngine.Memory
                 }
             }
         }
+
+        /// <summary>
+        /// Читает из процесса значения по определенному адресу
+        /// </summary>
+        /// <typeparam name="T">Тип читаемого значения</typeparam>
+        /// <param name="Address">Адрес</param>
+        /// <param name="Size">Размер строки (Если тип является string)</param>
+        /// <param name="Module">Имя модуля, с которого читается адрес</param>
+        /// <returns></returns>
+        public unsafe T Read<T>(HANDLE Address, string Module = null) => Read<T>(Address, 256, Module);
 
         /// <summary>
         /// Записывает в память значение по определенному адресу

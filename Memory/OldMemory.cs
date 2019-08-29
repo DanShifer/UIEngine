@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+
 using UIEngine.API;
 using UIEngine.Helper.Define.Helper;
 using UIEngine.Helper.Define.Variable;
@@ -42,7 +43,7 @@ namespace UIEngine.Memory
         /// </summary>
         /// <param name="Address">Адрес функции</param>
         /// <returns></returns>
-        public bool ReadBOOLEAN(HANDLE Address) => VariableConverter.ToBOOLEAN(ReadBytes(Address, (uint)Marshal.SizeOf(typeof(BOOLEAN))));
+        public bool ReadBOOLEAN(HANDLE Address) => VariableConverter.ByteToBOOLEAN(ReadBytes(Address, (uint)Marshal.SizeOf(typeof(BOOLEAN))));
 
         /// <summary>
         /// Конвертирует прочитанные байты в Double
@@ -77,7 +78,7 @@ namespace UIEngine.Memory
         /// </summary>
         /// <param name="Address">Адрес функции</param>
         /// <returns></returns>
-        public DWORD ReadDWORD(HANDLE Address) => VariableConverter.ToDWORD(ReadBytes(Address, (uint)Marshal.SizeOf(typeof(DWORD))));
+        public DWORD ReadDWORD(HANDLE Address) => VariableConverter.ByteToDWORD(ReadBytes(Address, (uint)Marshal.SizeOf(typeof(DWORD))));
 
         /// <summary>
         /// Конвертирует прочитанные байты в Int64
