@@ -1,8 +1,11 @@
-﻿namespace UIEngine.Helper.Enum
+﻿using System;
+
+namespace UIEngine.Helper.Enum
 {
     /// <summary>
     /// Доступ к процессу
     /// </summary>
+    [Flags]
     public enum ProcessAccess : uint
     {
         All = 0x001F0FFF,
