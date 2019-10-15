@@ -57,12 +57,12 @@ namespace UIEngine.Memory.Helper
 
             ProcessMemory = Process.GetProcessesByName(ProcessName);
 
-            if (IsProcessActive(ProcessName))
+            if (IsProcessActive())
             {
                 ProcessHandle = KernelAPI.OpenProcess(ProcessAccess, false, ProcessMemory[0].Id);
                 ProcessWindowHandle = ProcessMemory[0].MainWindowHandle;
 
-                Modules = GetProcessModule(ProcessMemory);
+                Modules = GetProcessModule();
             }
             else
             {
@@ -81,7 +81,7 @@ namespace UIEngine.Memory.Helper
         /// </summary>
         /// <param name="Index">Индекс ресурса процесса</param>
         /// <returns></returns>
-        public Process GetProcess(int Index = 0) => ProcessMemory[Index];
+        public Process GetProcess(int Index = 0) => ProcessMemory?[Index];
 
         /// <summary>
         /// Получение процесса
@@ -89,7 +89,7 @@ namespace UIEngine.Memory.Helper
         /// <param name="ProcessName">Имя  процесса</param>
         /// <param name="Index">Индекс ресурса процесса</param>
         /// <returns></returns>
-        public static Process GetProcess(string ProcessName, int Index = 0) => Process.GetProcessesByName(ProcessName)[Index];
+        public static Process GetProcess(string ProcessName, int Index = 0) => Process.GetProcessesByName(ProcessName)?[Index];
 
         /// <summary>
         /// Является ли процесс запущенным
@@ -113,7 +113,7 @@ namespace UIEngine.Memory.Helper
         /// </summary>
         /// <param name="ProcessName">Имя процесса</param>
         /// <returns></returns>
-        public static BOOLEAN IsProcessActiveWindow(string ProcessName) => GetProcess(ProcessName).MainWindowHandle == UserAPI.GetForegroundWindow() ? true : false;
+        public static BOOLEAN IsProcessActiveWindow(string ProcessName) => (GetProcess(ProcessName)?.MainWindowHandle?? IntPtr.Zero) == UserAPI.GetForegroundWindow() ? true : false;
 
         /// <summary>
         /// Получение модулей процесса и добавление их в коллекцию
@@ -124,56 +124,98 @@ namespace UIEngine.Memory.Helper
         {
             if (Modules == null)
             {
-                this.Modules = new Dictionary<string, HANDLE>();
+                Modules = new Dictionary<string, HANDLE>();
 
                 foreach (ProcessModule UIModule in GetProcess().Modules)
                 {
-                    this.Modules.Add(UIModule.ModuleName, UIModule.BaseAddress);
+                    Modules.Add(UIModule.ModuleName, UIModule.BaseAddress);
                 }
 
-                return this.Modules;
+                return Modules;
             }
             else
             {
-                return this.Modules;
+                return Modules;
             }
         }
 
-        public Dictionary<string, HANDLE> GetProcessModule(Process Process)
+        /// <summary>
+        /// Получение модулей процесса и добавление их в коллекцию
+        /// </summary>
+        /// <param name="ProcessName">Имя процесса</param>
+        /// <param name="Index">Индекс процесса</param>
+        /// <returns></returns>
+        public static Dictionary<string, HANDLE> GetProcessModule(string ProcessName, int Index = 0)
         {
+            Dictionary<string, HANDLE> Modules = new Dictionary<string, HANDLE>();
+
             if (Modules == null)
             {
-                this.Modules = new Dictionary<string, HANDLE>();
+                Modules = new Dictionary<string, HANDLE>();
+
+                foreach (ProcessModule UIModule in Process.GetProcessesByName(ProcessName)[Index].Modules)
+                {
+                    Modules.Add(UIModule.ModuleName, UIModule.BaseAddress);
+                }
+
+                return Modules;
+            }
+            else
+            {
+                return Modules;
+            }
+        }
+
+        /// <summary>
+        /// Получение модулей процесса и добавление их в коллекцию
+        /// </summary>
+        /// <param name="Process">Класс процесса</param>
+        /// <returns></returns>
+        public static Dictionary<string, HANDLE> GetProcessModule(Process Process)
+        {
+            Dictionary<string, HANDLE> Modules = new Dictionary<string, HANDLE>();
+
+            if (Modules == null)
+            {
+                Modules = new Dictionary<string, HANDLE>();
 
                 foreach (ProcessModule UIModule in Process.Modules)
                 {
-                    this.Modules.Add(UIModule.ModuleName, UIModule.BaseAddress);
+                    Modules.Add(UIModule.ModuleName, UIModule.BaseAddress);
                 }
 
-                return this.Modules;
+                return Modules;
             }
             else
             {
-                return this.Modules;
+                return Modules;
             }
         }
 
-        public Dictionary<string, HANDLE> GetProcessModule(Process[] Process)
+        /// <summary>
+        /// Получение модулей процесса и добавление их в коллекцию
+        /// </summary>
+        /// <param name="Process">Массив процесса</param>
+        /// <param name="Index">Индекс определенного процесса</param>
+        /// <returns></returns>
+        public static Dictionary<string, HANDLE> GetProcessModule(Process[] Process, int Index = 0)
         {
+            Dictionary<string, HANDLE> Modules = new Dictionary<string, HANDLE>();
+
             if (Modules == null)
             {
-                this.Modules = new Dictionary<string, HANDLE>();
+                Modules = new Dictionary<string, HANDLE>();
 
-                foreach (ProcessModule UIModule in Process[0].Modules)
+                foreach (ProcessModule UIModule in Process[Index].Modules)
                 {
-                    this.Modules.Add(UIModule.ModuleName, UIModule.BaseAddress);
+                    Modules.Add(UIModule.ModuleName, UIModule.BaseAddress);
                 }
 
-                return this.Modules;
+                return Modules;
             }
             else
             {
-                return this.Modules;
+                return Modules;
             }
         }
 
